@@ -205,40 +205,22 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
 
     return (
         <div className="flex flex-col h-full relative">
-        {/* Hero Header - Chat Theme */}
-        <div className="relative h-40 bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 overflow-hidden flex-shrink-0">
-        <div className="absolute inset-0">
-        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-        {/* Chat bubbles */}
-        <rect x="100" y="80" width="80" height="50" rx="15" fill="white" opacity="0.8"/>
-        <polygon points="100,110 85,115 100,120" fill="white" opacity="0.8"/>
-        <rect x="220" y="100" width="80" height="50" rx="15" fill="white" opacity="0.6"/>
-        <polygon points="300,125 315,130 300,135" fill="white" opacity="0.6"/>
-        {/* Message lines */}
-        <line x1="115" y1="95" x2="165" y2="95" stroke="#333" strokeWidth="3" opacity="0.3"/>
-        <line x1="115" y1="105" x2="155" y2="105" stroke="#333" strokeWidth="3" opacity="0.3"/>
-        <line x1="115" y1="115" x2="160" y2="115" stroke="#333" strokeWidth="3" opacity="0.3"/>
-        <line x1="235" y1="115" x2="285" y2="115" stroke="#333" strokeWidth="3" opacity="0.3"/>
-        <line x1="235" y1="125" x2="275" y2="125" stroke="#333" strokeWidth="3" opacity="0.3"/>
-        <line x1="235" y1="135" x2="280" y2="135" stroke="#333" strokeWidth="3" opacity="0.3"/>
-        </svg>
-        </div>
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
-        </button>
-        <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-        <Settings className="w-5 h-5 text-white" />
-        </button>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-        <h1 className="text-2xl font-black text-white drop-shadow-lg">AI-Kock 💬</h1>
-        <p className="text-white/90 text-sm mt-0.5">Chatta med din matassistent</p>
-        </div>
+        {/* Ny ren Hero Header för Chatt */}
+        <div className="relative pt-12 pb-2 px-6 flex-shrink-0 bg-[#F7F4EB] dark:bg-slate-900 border-b border-[#E0E0E0]/50 dark:border-slate-800">
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                    <Settings className="w-5 h-5" />
+                </button>
+            </div>
+            <h1 className="text-3xl font-semibold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">AI-Kock</h1>
+            <p className="text-[#7A7A7A] text-sm font-medium">Chatta med din matassistent</p>
         </div>
 
         {/* Chat Messages - iOS/WhatsApp Style */}
-        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 pb-64 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 pb-64 bg-transparent">
         {chatMessages.map((msg, idx) => {
             const prevMsg = chatMessages[idx - 1];
             const showTimestamp = !prevMsg || (new Date(msg.timestamp).getTime() - new Date(prevMsg.timestamp).getTime() > 60000);
@@ -253,15 +235,15 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
                 )}
                 <div className={clsx("flex items-end gap-2 mb-1", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
                     {msg.role === 'agent' && (
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 mb-1">
+                        <div className="w-8 h-8 rounded-full bg-[#A9B8A2] flex items-center justify-center text-white font-bold text-sm flex-shrink-0 mb-1">
                         AI
                         </div>
                     )}
                     <div className={clsx(
-                        "max-w-[75%] rounded-[20px] px-4 py-2.5 shadow-sm",
+                        "max-w-[75%] rounded-[20px] px-4 py-3 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-[#E0E0E0]/30",
                         msg.role === 'user'
-                            ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-br-md"
-                            : "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-md"
+                            ? "bg-[#C48B71] text-white rounded-br-md" // Terrakotta för användaren
+                            : "bg-white dark:bg-slate-800 text-[#2D2D2D] dark:text-slate-100 rounded-bl-md"
                     )}>
                     <div className="text-[15px] leading-relaxed">
                     {msg.role === 'agent' && msg.content === '...' ? (
@@ -286,10 +268,10 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
         <div className={clsx("absolute bottom-0 w-full backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 border-t border-gray-200/50 dark:border-gray-700/50 flex flex-col pb-24 shadow-lg")}>
         {/* Mode Toggle */}
         <div className="flex justify-center items-center gap-2 p-3 relative border-b border-gray-100 dark:border-gray-800">
-        <button onClick={() => { setInputMode('chat'); stopListening(); }} className={clsx("px-6 py-2 rounded-full text-xs font-semibold transition-all", inputMode === 'chat' ? "bg-blue-500 text-white shadow-md scale-105" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400")}>
+        <button onClick={() => { setInputMode('chat'); stopListening(); }} className={clsx("px-6 py-2 rounded-full text-xs font-semibold transition-all", inputMode === 'chat' ? "bg-[#A9B8A2] text-white shadow-sm" : "bg-transparent text-[#7A7A7A] border border-[#E0E0E0]")}>
         💬 Chatt
         </button>
-        <button onClick={() => { setInputMode('voice'); startListening(); }} className={clsx("px-6 py-2 rounded-full text-xs font-semibold transition-all", inputMode === 'voice' ? "bg-green-500 text-white shadow-md scale-105" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400")}>
+        <button onClick={() => { setInputMode('voice'); startListening(); }} className={clsx("px-6 py-2 rounded-full text-xs font-semibold transition-all", inputMode === 'voice' ? "bg-[#A9B8A2] text-white shadow-sm" : "bg-transparent text-[#7A7A7A] border border-[#E0E0E0]")}>
         🎙️ Tala
         </button>
         <button onClick={() => setSpeakerMode(!speakerMode)} className={clsx("absolute right-4 p-2 rounded-full transition-all", speakerMode ? "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400" : "bg-gray-100 dark:bg-gray-800 text-gray-400")} title={speakerMode ? "Ljud på" : "Ljud av"}>
@@ -314,10 +296,10 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
                 onClick={() => handleChatSend()}
                 disabled={!chatInput.trim() || isWorking}
                 className={clsx(
-                "w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg active:scale-95",
+                "w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-md active:scale-95",
                 chatInput.trim() && !isWorking
-                    ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white"
-                    : "bg-gray-200 dark:bg-gray-700 text-gray-400"
+                    ? "bg-[#C48B71] text-white hover:bg-[#b57d63]" // Terrakotta
+                    : "bg-[#E8E5DC] text-[#7A7A7A]"
                 )}
             >
                 <Send className="w-5 h-5" />
@@ -325,7 +307,7 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
             </div>
         ) : (
             <div className="flex flex-col items-center justify-center p-6 gap-3">
-            <button onClick={toggleRecording} className={clsx("w-20 h-20 rounded-full flex items-center justify-center text-white shadow-2xl transition-all active:scale-95", isRecording ? "bg-gradient-to-br from-red-500 to-red-600 animate-pulse" : "bg-gradient-to-br from-green-500 to-green-600")}>
+            <button onClick={toggleRecording} className={clsx("w-20 h-20 rounded-full flex items-center justify-center text-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all active:scale-95", isRecording ? "bg-[#C48B71] animate-pulse" : "bg-[#A9B8A2]")}>
             {isRecording ? <Square size={32} fill="currentColor" /> : <Mic size={32} />}
             </button>
             <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">

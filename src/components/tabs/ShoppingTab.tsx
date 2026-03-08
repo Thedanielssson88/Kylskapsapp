@@ -222,34 +222,18 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
 
     return (
         <div className="pb-20">
-        {/* Hero Header - Shopping Theme */}
-        <div className="relative h-40 bg-gradient-to-br from-purple-400 via-indigo-500 to-blue-500 overflow-hidden mb-4">
-        <div className="absolute inset-0">
-        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-        {/* Shopping cart */}
-        <rect x="150" y="90" width="100" height="60" rx="5" fill="white" opacity="0.8"/>
-        <circle cx="170" cy="165" r="8" fill="white" opacity="0.8"/>
-        <circle cx="230" cy="165" r="8" fill="white" opacity="0.8"/>
-        <path d="M 140 80 L 150 90 L 250 90 L 260 80 Z" fill="white" opacity="0.6"/>
-        {/* Items in cart */}
-        <circle cx="180" cy="115" r="10" fill="#4ade80" opacity="0.7"/>
-        <circle cx="210" cy="115" r="10" fill="#ef4444" opacity="0.7"/>
-        <rect x="165" y="130" width="15" height="15" rx="2" fill="#fbbf24" opacity="0.7"/>
-        <rect x="190" y="130" width="15" height="15" rx="2" fill="#f97316" opacity="0.7"/>
-        </svg>
-        </div>
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
-        </button>
-        <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-        <Settings className="w-5 h-5 text-white" />
-        </button>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-        <h1 className="text-2xl font-black text-white drop-shadow-lg">Inköpslista 🛒</h1>
-        <p className="text-white/90 text-sm mt-0.5">Handla smart och effektivt</p>
-        </div>
+        {/* Ny ren Hero Header för Inköp */}
+        <div className="relative pt-12 pb-2 px-6 bg-[#F7F4EB] dark:bg-slate-900 border-b border-[#E0E0E0]/50 dark:border-slate-800 mb-4">
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                    <Settings className="w-5 h-5" />
+                </button>
+            </div>
+            <h1 className="text-3xl font-semibold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">Min inköpslista</h1>
+            <p className="text-[#7A7A7A] text-sm font-medium pb-4">Handla smart och effektivt</p>
         </div>
 
         <div className="p-4 space-y-4">
@@ -266,7 +250,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
         ) : (
             shoppingList.map(item => (
                 <div key={item.id} className={clsx("flex items-center gap-3 p-3 border rounded-xl transition-colors", item.checked ? "opacity-50 " + t.bgAlt : t.bgInput)}>
-                <button onClick={() => saveShoppingItem({...item, checked: !item.checked})} className={clsx("w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0", item.checked ? "bg-green-500 border-green-500" : "border-gray-400")}>
+                <button onClick={() => saveShoppingItem({...item, checked: !item.checked})} className={clsx("w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors", item.checked ? "bg-[#A9B8A2] border-[#A9B8A2]" : "border-[#E0E0E0] bg-white")}>
                 {item.checked && <Check className="w-4 h-4 text-white" />}
                 </button>
                 <span className={clsx("flex-1 text-sm font-medium", item.checked && "line-through")}>{item.name}</span>
@@ -295,8 +279,8 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
             </p>
             </div>
             <div className="flex gap-2">
-            <span className="text-xs bg-purple-500/20 text-purple-600 px-3 py-1 rounded-full font-bold">{week.meals} recept</span>
-            <span className="text-xs bg-blue-500/20 text-blue-600 px-3 py-1 rounded-full font-bold">{week.totalPortions} portioner</span>
+            <span className="text-[11px] bg-[#E3EAE0] text-[#2D2D2D] px-3 py-1 rounded-full font-bold">{week.meals} recept</span>
+            <span className="text-[11px] bg-[#E3EAE0] text-[#2D2D2D] px-3 py-1 rounded-full font-bold">{week.totalPortions} portioner</span>
             </div>
             </div>
             <button
@@ -309,7 +293,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 setShowInventoryDialog(true);
                 setIsModalOpen(true);
             }}
-            className="w-full mb-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-shadow"
+            className="w-full mb-4 py-3 bg-[#C48B71] hover:bg-[#b57d63] text-white rounded-xl font-semibold flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
             >
             <ClipboardCheck className="w-4 h-4" /> Starta Inventering
             </button>
@@ -353,12 +337,12 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 <div className={clsx("w-full sm:max-w-md h-[85vh] sm:h-auto rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden flex flex-col shadow-2xl relative", t.cardBg)}>
 
                 {/* Header och Progress */}
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 pb-8 text-white flex-shrink-0">
+                <div className="bg-[#F7F4EB] p-6 pb-8 text-[#2D2D2D] flex-shrink-0 border-b border-[#E0E0E0]/50">
                 <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                 <ClipboardCheck className="w-5 h-5" /> Inventering
                 </h2>
-                <button onClick={() => { setShowInventoryDialog(false); setIsModalOpen(false); }} className="p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
+                <button onClick={() => { setShowInventoryDialog(false); setIsModalOpen(false); }} className="p-2 bg-black/5 text-[#2D2D2D] hover:bg-black/10 rounded-full transition-colors">
                 <X className="w-4 h-4" />
                 </button>
                 </div>
@@ -387,7 +371,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 <ChevronLeft className="w-4 h-4 opacity-50" /> Svep <ChevronRight className="w-4 h-4 opacity-50" />
                 </p>
 
-                <h3 className="text-3xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-br from-blue-500 to-purple-600 pb-1">
+                <h3 className="text-3xl font-bold mb-2 text-[#2D2D2D] pb-1">
                 {currentIng.name}
                 </h3>
 
@@ -438,7 +422,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 {currentInventoryIndex < inventoryIngredients.length - 1 ? (
                     <button
                     onClick={() => setCurrentInventoryIndex(currentInventoryIndex + 1)}
-                    className="flex-1 py-4 rounded-2xl font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95"
+                    className="flex-1 py-4 rounded-2xl font-bold bg-[#C48B71] hover:bg-[#b57d63] text-white shadow-sm flex items-center justify-center gap-2 transition-transform active:scale-95"
                     >
                     Nästa vara <ChevronRight className="w-5 h-5" />
                     </button>
@@ -456,7 +440,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                         setIsModalOpen(false);
                         alert('✅ Lageruppgifter sparade!');
                     }}
-                    className="flex-1 py-4 rounded-2xl font-bold bg-green-600 hover:bg-green-500 text-white shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95"
+                    className="flex-1 py-4 rounded-2xl font-bold bg-[#A9B8A2] hover:bg-[#98A791] text-white shadow-sm flex items-center justify-center gap-2 transition-transform active:scale-95"
                     >
                     <CheckCircle2 className="w-5 h-5" /> Spara Inventering
                     </button>
