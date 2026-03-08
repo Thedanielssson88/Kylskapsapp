@@ -61,9 +61,12 @@ export async function callAI(prompt: string, hiddenContext: string = ''): Promis
             },
             body: JSON.stringify({ model: openRouterModelId, messages: [{ role: 'user', content: fullMessage }] })
         });
-        if (!response.ok) throw new Error(`OpenRouter Error (${response.status})`);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(`OpenRouter Error (${response.status}): ${errorData.error?.message || 'Okänt fel'}`);
+        }
         const data = await response.json();
-        return data.choices[0].message.content;
+        return data.choices?.[0]?.message?.content || '';
     }
 
     throw new Error('Modell stöds ej eller är inte konfigurerad i aiService.');

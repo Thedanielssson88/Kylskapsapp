@@ -201,7 +201,7 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
 
     return (
         <div className="flex flex-col h-full relative">
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-48">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-64">
         {chatMessages.map(msg => (
             <div key={msg.id} className={clsx("flex flex-col", msg.role === 'user' ? 'items-end' : 'items-start')}>
             <div className={clsx("max-w-[85%] rounded-2xl p-4 text-sm shadow-sm overflow-hidden", msg.role === 'user' ? t.bubbleUser + ' rounded-br-none' : t.bubbleAgent + ' rounded-bl-none')}>
@@ -211,7 +211,7 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
         ))}
         </div>
 
-        <div className={clsx("absolute bottom-0 w-full border-t flex flex-col", t.bgInput, t.border)}>
+        <div className={clsx("absolute bottom-0 w-full border-t flex flex-col pb-24", t.bgInput, t.border)}>
         <div className="flex justify-center items-center gap-3 p-2 pt-3 border-b border-gray-200 dark:border-gray-800 relative">
         <button onClick={() => { setInputMode('chat'); stopListening(); }} className={clsx("px-8 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm border", inputMode === 'chat' ? "bg-purple-600 border-purple-500 text-white" : clsx(t.bgAlt, t.border, t.textMuted))}>💬 Chatt</button>
         <button onClick={() => { setInputMode('voice'); startListening(); }} className={clsx("px-8 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm border", inputMode === 'voice' ? "bg-green-600 border-green-500 text-white" : clsx(t.bgAlt, t.border, t.textMuted))}>🎙️ Tala</button>

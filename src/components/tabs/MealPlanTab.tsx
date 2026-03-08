@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { MealType, PlannedMeal } from '../../types/pantry';
 
-export const MealPlanTab = ({ t }: { t: any }) => {
+export const MealPlanTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }) => {
     const { mealPlan, removePlannedMeal, savePlannedMeal, savedRecipes, generatedRecipes } = usePantry();
 
     const [currentWeekStart, setCurrentWeekStart] = useState(() => {
@@ -55,7 +55,7 @@ export const MealPlanTab = ({ t }: { t: any }) => {
                 <span className="font-bold capitalize">{dayName}, {date.getDate()} {date.toLocaleDateString('sv-SE', { month: 'short' })}</span>
                 {dayMeals.length > 0 && <span className="bg-purple-500/20 text-purple-600 text-xs px-2 py-0.5 rounded-full font-bold">{dayMeals.length}</span>}
                 </div>
-                <button onClick={() => { setSelectedDate(dateStr); setShowAddMealModal(true); }} className="text-purple-600">
+                <button onClick={() => { setSelectedDate(dateStr); setShowAddMealModal(true); setIsModalOpen(true); }} className="text-purple-600">
                 <Plus className="w-5 h-5" />
                 </button>
                 </div>
@@ -82,11 +82,11 @@ export const MealPlanTab = ({ t }: { t: any }) => {
         </div>
 
         {showAddMealModal && selectedDate && (
-            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50">
-            <div className={clsx("w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-4", t.cardBg, t.cardBorder)}>
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-4 pb-safe">
+            <div className={clsx("w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto", t.cardBg, t.cardBorder)}>
             <div className="flex items-center justify-between">
             <h3 className="font-bold text-lg">Lägg till måltid</h3>
-            <button onClick={() => { setShowAddMealModal(false); setSelectedMealType(null); }} className="p-1"><X className="w-5 h-5" /></button>
+            <button onClick={() => { setShowAddMealModal(false); setSelectedMealType(null); setIsModalOpen(false); }} className="p-1"><X className="w-5 h-5" /></button>
             </div>
             {!selectedMealType ? (
                 <div className="space-y-2">
@@ -101,7 +101,7 @@ export const MealPlanTab = ({ t }: { t: any }) => {
                 {[...savedRecipes, ...generatedRecipes].map((recipe, idx) => (
                     <div key={idx} onClick={() => {
                         savePlannedMeal({ id: Date.now().toString() + Math.random(), date: selectedDate, mealType: selectedMealType, recipe: recipe, servings: recipe.servings || 4 });
-                        setShowAddMealModal(false); setSelectedMealType(null);
+                        setShowAddMealModal(false); setSelectedMealType(null); setIsModalOpen(false);
                     }} className={clsx("rounded-2xl overflow-hidden shadow-sm border cursor-pointer hover:shadow-md transition-shadow", t.cardBg, t.border)}>
                     {recipe.imageUrl ? (
                         <div className="relative h-32 overflow-hidden">

@@ -6,7 +6,7 @@ import { callAI } from '../../services/aiService';
 
 const CATEGORIES = ["Mejeri & Ägg", "Kött & Fågel", "Frukt & Grönt", "Skafferivaror", "Bröd & Spannmål", "Kylvaror", "Frysvaror", "Övrigt"];
 
-export const PantryTab = ({ t }: { t: any }) => {
+export const PantryTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }) => {
     const { ingredients, saveIngredient, isWorking, setIsWorking, setLoadingMessage } = usePantry();
     const [locations, setLocations] = useState<string[]>(() => JSON.parse(localStorage.getItem('PANTRY_LOCATIONS') || '["Kylskåp", "Frys", "Skafferi"]'));
     const [activeLocation, setActiveLocation] = useState<string>(locations[0]);
@@ -111,8 +111,42 @@ export const PantryTab = ({ t }: { t: any }) => {
                     const aiResponse = data.content?.[0]?.text || '';
                     const jsonMatch = aiResponse.match(/\[[\s\S]*?\]/);
                     if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
+                } else if (selectedModel === 'openrouter') {
+                    const openRouterApiKey = localStorage.getItem('NANO_OPENROUTER_API_KEY');
+                    const openRouterModelId = localStorage.getItem('NANO_OPENROUTER_MODEL_ID') || 'anthropic/claude-3.5-sonnet';
+                    if (!openRouterApiKey) throw new Error('OpenRouter API-nyckel saknas');
+
+                    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${openRouterApiKey}`,
+                            'HTTP-Referer': window.location.origin,
+                            'X-Title': 'Kylskåpsapp'
+                        },
+                        body: JSON.stringify({
+                            model: openRouterModelId,
+                            messages: [{
+                                role: 'user',
+                                content: [
+                                    { type: 'image_url', image_url: { url: base64DataUrl } },
+                                    { type: 'text', text: prompt }
+                                ]
+                            }]
+                        })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        throw new Error(`OpenRouter API-fel (${response.status}): ${errorData.error?.message || 'Okänt fel'}`);
+                    }
+
+                    const data = await response.json();
+                    const aiResponse = data.choices?.[0]?.message?.content || '';
+                    const jsonMatch = aiResponse.match(/\[[\s\S]*?\]/);
+                    if (jsonMatch) parsed = JSON.parse(jsonMatch[0]);
                 } else {
-                    throw new Error('Endast Claude API och Gemini stöds för bildanalys utan backend');
+                    throw new Error('Endast Claude API, Gemini och OpenRouter stöds för bildanalys utan backend');
                 }
             }
 
@@ -206,7 +240,7 @@ export const PantryTab = ({ t }: { t: any }) => {
                 <h3 className="text-[10px] font-bold uppercase tracking-wider text-purple-500 mb-2">{category}</h3>
                 <div className="flex flex-col gap-2">
                 {items.map(ing => (
-                    <div key={ing.id} onClick={() => setEditingIngredient(ing)} className={clsx("flex flex-col px-3 py-2 rounded-xl border cursor-pointer hover:border-purple-500/50 transition-colors", ing.source === 'scanned' ? 'bg-purple-500/5 border-purple-500/20' : t.bgInput)}>
+                    <div key={ing.id} onClick={() => { setEditingIngredient(ing); setIsModalOpen(true); }} className={clsx("flex flex-col px-3 py-2 rounded-xl border cursor-pointer hover:border-purple-500/50 transition-colors", ing.source === 'scanned' ? 'bg-purple-500/5 border-purple-500/20' : t.bgInput)}>
                     <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold">{ing.name}</span>
                     <span className="text-xs opacity-50 flex items-center gap-1"><Edit2 className="w-3 h-3"/></span>
@@ -260,6 +294,74 @@ export const PantryTab = ({ t }: { t: any }) => {
             )}
             </div>
             <button onClick={() => setScanResult(null)} className={clsx("w-full mt-6 py-3 rounded-xl font-bold", t.btnPrimary)}>Okej</button>
+            </div>
+            </div>
+        )}
+
+        {/* Edit Ingredient Modal */}
+        {editingIngredient && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className={clsx("rounded-2xl p-6 max-w-md w-full", t.bgAlt)}>
+            <h3 className="text-xl font-bold mb-4">Redigera ingrediens</h3>
+            <div className="space-y-4">
+                <div>
+                    <label className="text-sm opacity-70 block mb-2">Namn</label>
+                    <input
+                        type="text"
+                        value={editingIngredient.name}
+                        onChange={(e) => setEditingIngredient({ ...editingIngredient, name: e.target.value })}
+                        className={clsx("w-full px-4 py-3 rounded-xl border", t.bgInput, t.border)}
+                    />
+                </div>
+                <div>
+                    <label className="text-sm opacity-70 block mb-2">Mängd (t.ex. 500 g, 2 st)</label>
+                    <input
+                        type="text"
+                        value={editingIngredient.quantity || ''}
+                        onChange={(e) => setEditingIngredient({ ...editingIngredient, quantity: e.target.value })}
+                        placeholder="Frivillig"
+                        className={clsx("w-full px-4 py-3 rounded-xl border", t.bgInput, t.border)}
+                    />
+                </div>
+                <div>
+                    <label className="text-sm opacity-70 block mb-2">Kategori</label>
+                    <select
+                        value={editingIngredient.category}
+                        onChange={(e) => setEditingIngredient({ ...editingIngredient, category: e.target.value })}
+                        className={clsx("w-full px-4 py-3 rounded-xl border", t.bgInput, t.border)}
+                    >
+                        {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    </select>
+                </div>
+                <div>
+                    <label className="text-sm opacity-70 block mb-2">Plats</label>
+                    <select
+                        value={editingIngredient.location || activeLocation}
+                        onChange={(e) => setEditingIngredient({ ...editingIngredient, location: e.target.value })}
+                        className={clsx("w-full px-4 py-3 rounded-xl border", t.bgInput, t.border)}
+                    >
+                        {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+                    </select>
+                </div>
+                <div className="flex gap-3 pt-2">
+                    <button
+                        onClick={() => {
+                            saveIngredient(editingIngredient);
+                            setEditingIngredient(null);
+                            setIsModalOpen(false);
+                        }}
+                        className={clsx("flex-1 py-3 rounded-xl font-bold", t.btnPrimary)}
+                    >
+                        Spara
+                    </button>
+                    <button
+                        onClick={() => { setEditingIngredient(null); setIsModalOpen(false); }}
+                        className="flex-1 py-3 rounded-xl font-bold bg-gray-500 hover:bg-gray-600 text-white"
+                    >
+                        Avbryt
+                    </button>
+                </div>
+            </div>
             </div>
             </div>
         )}

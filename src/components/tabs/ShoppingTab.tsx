@@ -3,7 +3,7 @@ import { Plus, Check, X, CheckCircle2, ClipboardCheck, ChevronLeft, ChevronRight
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 
-export const ShoppingTab = ({ t }: { t: any }) => {
+export const ShoppingTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }) => {
     const { shoppingList, mealPlan, ingredients, saveShoppingItem, removeShoppingItem, saveIngredient } = usePantry();
     const [manualShopping, setManualShopping] = useState('');
 
@@ -276,6 +276,7 @@ export const ShoppingTab = ({ t }: { t: any }) => {
                 })));
                 setCurrentInventoryIndex(0);
                 setShowInventoryDialog(true);
+                setIsModalOpen(true);
             }}
             className="w-full mb-3 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-shadow"
             >
@@ -317,7 +318,7 @@ export const ShoppingTab = ({ t }: { t: any }) => {
             const progressPercent = ((currentInventoryIndex + 1) / inventoryIngredients.length) * 100;
 
             return (
-                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex flex-col justify-end sm:justify-center z-[70] p-0 sm:p-4">
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex flex-col justify-end sm:justify-center z-[70] p-0 sm:p-4 pb-safe">
                 <div className={clsx("w-full sm:max-w-md h-[85vh] sm:h-auto rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden flex flex-col shadow-2xl relative", t.cardBg)}>
 
                 {/* Header och Progress */}
@@ -326,7 +327,7 @@ export const ShoppingTab = ({ t }: { t: any }) => {
                 <h2 className="text-xl font-bold flex items-center gap-2">
                 <ClipboardCheck className="w-5 h-5" /> Inventering
                 </h2>
-                <button onClick={() => setShowInventoryDialog(false)} className="p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
+                <button onClick={() => { setShowInventoryDialog(false); setIsModalOpen(false); }} className="p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors">
                 <X className="w-4 h-4" />
                 </button>
                 </div>
@@ -421,6 +422,7 @@ export const ShoppingTab = ({ t }: { t: any }) => {
                             }
                         });
                         setShowInventoryDialog(false);
+                        setIsModalOpen(false);
                         alert('✅ Lageruppgifter sparade!');
                     }}
                     className="flex-1 py-4 rounded-2xl font-bold bg-green-600 hover:bg-green-500 text-white shadow-md flex items-center justify-center gap-2 transition-transform active:scale-95"
