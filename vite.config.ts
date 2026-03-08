@@ -15,10 +15,10 @@ export default defineConfig(({mode}) => {
         injectRegister: 'auto',
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
         manifest: {
-          name: 'Smart Skafferi - Kylskåpsapp',
+          name: 'Smart Skafferi - Kylskåpsapp v2',
           short_name: 'Skafferi',
           description: 'Hantera ditt kylskåp, skafferi och frys med AI-assistans',
-          version: '1.0.1',
+          version: '2.0.0',
           theme_color: '#8b5cf6',
           background_color: '#ffffff',
           display: 'standalone',

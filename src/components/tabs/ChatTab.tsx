@@ -200,43 +200,101 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
     };
 
     return (
-        <div className="flex flex-col h-full relative">
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-64">
-        {chatMessages.map(msg => (
-            <div key={msg.id} className={clsx("flex flex-col", msg.role === 'user' ? 'items-end' : 'items-start')}>
-            <div className={clsx("max-w-[85%] rounded-2xl p-4 text-sm shadow-sm overflow-hidden", msg.role === 'user' ? t.bubbleUser + ' rounded-br-none' : t.bubbleAgent + ' rounded-bl-none')}>
-            {msg.role === 'agent' && msg.content === '...' ? 'AI tänker...' : renderMarkdown(msg.content)}
-            </div>
-            </div>
-        ))}
+        <div className="flex flex-col h-full relative bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        {/* Chat Messages - iOS/WhatsApp Style */}
+        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 pb-64">
+        {chatMessages.map((msg, idx) => {
+            const prevMsg = chatMessages[idx - 1];
+            const showTimestamp = !prevMsg || (new Date(msg.timestamp).getTime() - new Date(prevMsg.timestamp).getTime() > 60000);
+            const msgTime = new Date(msg.timestamp).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' });
+
+            return (
+                <div key={msg.id} className="flex flex-col">
+                {showTimestamp && (
+                    <div className="text-center text-xs text-gray-500 dark:text-gray-400 mb-3 font-medium">
+                    {new Date(msg.timestamp).toLocaleDateString('sv-SE', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                )}
+                <div className={clsx("flex items-end gap-2 mb-1", msg.role === 'user' ? 'flex-row-reverse' : 'flex-row')}>
+                    {msg.role === 'agent' && (
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0 mb-1">
+                        AI
+                        </div>
+                    )}
+                    <div className={clsx(
+                        "max-w-[75%] rounded-[20px] px-4 py-2.5 shadow-sm",
+                        msg.role === 'user'
+                            ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-br-md"
+                            : "bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-bl-md"
+                    )}>
+                    <div className="text-[15px] leading-relaxed">
+                    {msg.role === 'agent' && msg.content === '...' ? (
+                        <div className="flex gap-1 py-2">
+                        <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '0ms'}}></div>
+                        <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '150ms'}}></div>
+                        <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{animationDelay: '300ms'}}></div>
+                        </div>
+                    ) : renderMarkdown(msg.content)}
+                    </div>
+                    <div className={clsx("text-[11px] mt-1 opacity-60", msg.role === 'user' ? 'text-white/80' : 'text-gray-500')}>
+                    {msgTime}
+                    </div>
+                    </div>
+                </div>
+                </div>
+            );
+        })}
         </div>
 
-        <div className={clsx("absolute bottom-0 w-full border-t flex flex-col pb-24", t.bgInput, t.border)}>
-        <div className="flex justify-center items-center gap-3 p-2 pt-3 border-b border-gray-200 dark:border-gray-800 relative">
-        <button onClick={() => { setInputMode('chat'); stopListening(); }} className={clsx("px-8 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm border", inputMode === 'chat' ? "bg-purple-600 border-purple-500 text-white" : clsx(t.bgAlt, t.border, t.textMuted))}>💬 Chatt</button>
-        <button onClick={() => { setInputMode('voice'); startListening(); }} className={clsx("px-8 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm border", inputMode === 'voice' ? "bg-green-600 border-green-500 text-white" : clsx(t.bgAlt, t.border, t.textMuted))}>🎙️ Tala</button>
-
-        {/* NYTT: Ljud Av/På-knapp */}
-        <button
-        onClick={() => setSpeakerMode(!speakerMode)}
-        className={clsx("absolute right-4 p-2 rounded-full transition-colors", speakerMode ? "text-green-500 hover:bg-green-500/10" : "text-gray-400 hover:bg-gray-500/10")}
-        title={speakerMode ? "Ljud på" : "Ljud av"}
-        >
-        {speakerMode ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
+        {/* Input Area - iOS Style */}
+        <div className={clsx("absolute bottom-0 w-full backdrop-blur-xl bg-white/90 dark:bg-slate-900/90 border-t border-gray-200/50 dark:border-gray-700/50 flex flex-col pb-24 shadow-lg")}>
+        {/* Mode Toggle */}
+        <div className="flex justify-center items-center gap-2 p-3 relative border-b border-gray-100 dark:border-gray-800">
+        <button onClick={() => { setInputMode('chat'); stopListening(); }} className={clsx("px-6 py-2 rounded-full text-xs font-semibold transition-all", inputMode === 'chat' ? "bg-blue-500 text-white shadow-md scale-105" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400")}>
+        💬 Chatt
+        </button>
+        <button onClick={() => { setInputMode('voice'); startListening(); }} className={clsx("px-6 py-2 rounded-full text-xs font-semibold transition-all", inputMode === 'voice' ? "bg-green-500 text-white shadow-md scale-105" : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400")}>
+        🎙️ Tala
+        </button>
+        <button onClick={() => setSpeakerMode(!speakerMode)} className={clsx("absolute right-4 p-2 rounded-full transition-all", speakerMode ? "bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400" : "bg-gray-100 dark:bg-gray-800 text-gray-400")} title={speakerMode ? "Ljud på" : "Ljud av"}>
+        {speakerMode ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
         </button>
         </div>
+
+        {/* Input Field */}
         {inputMode === 'chat' ? (
-            <div className="p-3 flex gap-2">
-            <input type="text" value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleChatSend()} placeholder="Fråga om matlagning..." className={clsx("flex-1 px-4 py-3 rounded-xl outline-none border", t.bgInput, t.border, t.text)} />
-            <button onClick={() => handleChatSend()} disabled={!chatInput.trim() || isWorking} className={clsx("p-3 rounded-xl shadow-md", t.btnPrimary)}>
-            <Send className="w-5 h-5" />
+            <div className="p-4 flex items-end gap-3">
+            <div className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-[24px] flex items-center px-4 py-2 border-2 border-transparent focus-within:border-blue-500 dark:focus-within:border-blue-400 transition-all">
+                <input
+                type="text"
+                value={chatInput}
+                onChange={e => setChatInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleChatSend()}
+                placeholder="Meddelande..."
+                className="flex-1 bg-transparent outline-none text-[15px] text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+                />
+            </div>
+            <button
+                onClick={() => handleChatSend()}
+                disabled={!chatInput.trim() || isWorking}
+                className={clsx(
+                "w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-lg active:scale-95",
+                chatInput.trim() && !isWorking
+                    ? "bg-gradient-to-br from-blue-500 to-blue-600 text-white"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-400"
+                )}
+            >
+                <Send className="w-5 h-5" />
             </button>
             </div>
         ) : (
-            <div className="flex flex-col items-center justify-center p-4 gap-4">
-            <button onClick={toggleRecording} className={clsx("w-16 h-16 rounded-full flex items-center justify-center text-white", isRecording ? "bg-red-500 animate-pulse" : "bg-green-600")}>
-            {isRecording ? <Square size={28} fill="currentColor" /> : <Mic size={28} />}
+            <div className="flex flex-col items-center justify-center p-6 gap-3">
+            <button onClick={toggleRecording} className={clsx("w-20 h-20 rounded-full flex items-center justify-center text-white shadow-2xl transition-all active:scale-95", isRecording ? "bg-gradient-to-br from-red-500 to-red-600 animate-pulse" : "bg-gradient-to-br from-green-500 to-green-600")}>
+            {isRecording ? <Square size={32} fill="currentColor" /> : <Mic size={32} />}
             </button>
+            <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+            {isRecording ? "Lyssnar..." : "Tryck för att börja tala"}
+            </p>
             </div>
         )}
         </div>
