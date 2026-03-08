@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { Camera, Plus, Edit2, CheckCircle2, Paperclip, RefreshCw } from 'lucide-react';
+import { Camera, Plus, Edit2, CheckCircle2, Paperclip, RefreshCw, Sun, Moon, Settings } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { callAI } from '../../services/aiService';
 
 const CATEGORIES = ["Mejeri & Ägg", "Kött & Fågel", "Frukt & Grönt", "Skafferivaror", "Bröd & Spannmål", "Kylvaror", "Frysvaror", "Övrigt"];
 
-export const PantryTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }) => {
+export const PantryTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }: { t: any, setIsModalOpen: any, darkMode: boolean, setDarkMode: (val: boolean) => void, navigate: any }) => {
     const { ingredients, saveIngredient, isWorking, setIsWorking, setLoadingMessage } = usePantry();
     const [locations, setLocations] = useState<string[]>(() => JSON.parse(localStorage.getItem('PANTRY_LOCATIONS') || '["Kylskåp", "Frys", "Skafferi"]'));
     const [activeLocation, setActiveLocation] = useState<string>(locations[0]);
@@ -210,11 +210,41 @@ export const PantryTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }
     }, {} as Record<string, typeof activeIngredients>);
 
     return (
-        <div className="p-4 space-y-4 pb-20 relative">
+        <div className="pb-20">
         {previewImage && isWorking && (
             <img src={previewImage} className="fixed inset-0 w-full h-full object-cover opacity-20 z-40 pointer-events-none" alt="Scanning" />
         )}
 
+        {/* Hero Header - Storage Theme */}
+        <div className="relative h-40 bg-gradient-to-br from-green-400 via-emerald-500 to-cyan-500 overflow-hidden mb-4">
+        <div className="absolute inset-0">
+        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+        {/* Fridge icon */}
+        <rect x="160" y="60" width="80" height="100" rx="8" fill="white" opacity="0.8"/>
+        <rect x="160" y="60" width="80" height="45" fill="white" opacity="0.5"/>
+        <circle cx="230" cy="82" r="3" fill="#333" opacity="0.6"/>
+        <circle cx="230" cy="135" r="3" fill="#333" opacity="0.6"/>
+        {/* Items inside */}
+        <rect x="175" y="75" width="15" height="20" rx="2" fill="#4ade80" opacity="0.7"/>
+        <rect x="195" y="75" width="15" height="20" rx="2" fill="#ef4444" opacity="0.7"/>
+        <rect x="215" y="75" width="15" height="20" rx="2" fill="#fbbf24" opacity="0.7"/>
+        </svg>
+        </div>
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
+        </button>
+        <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+        <Settings className="w-5 h-5 text-white" />
+        </button>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+        <h1 className="text-2xl font-black text-white drop-shadow-lg">Lagring 🧊</h1>
+        <p className="text-white/90 text-sm mt-0.5">Kylskåp, frys och skafferi</p>
+        </div>
+        </div>
+
+        <div className="px-4 space-y-4">
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         {locations.map(loc => (
             <button key={loc} onClick={() => setActiveLocation(loc)} className={clsx("px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap", activeLocation === loc ? t.btnPrimary + " shadow-md" : t.bgInput + " border " + t.border + " opacity-70")}>{loc}</button>
@@ -383,6 +413,7 @@ export const PantryTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }
             </div>
             </div>
         )}
+        </div>
         </div>
     );
 };

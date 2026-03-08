@@ -37,21 +37,6 @@ const SmartPantryShell = () => {
 
     return (
         <div className={clsx("flex flex-col h-screen overflow-hidden", t.bg, t.text)}>
-        {/* Header - Döljs vid modal */}
-        {!isModalOpen && (
-            <header className={clsx("px-5 pt-12 pb-4 z-10 flex items-center justify-between sticky top-0 backdrop-blur-md border-b transition-all duration-300 animate-in fade-in slide-in-from-top-4", t.navBg, t.border)}>
-            <h1 className={clsx("text-2xl font-extrabold tracking-tight truncate", t.textWhite)}>Smart Skafferi</h1>
-            <div className="flex items-center gap-1.5">
-            <button onClick={() => setDarkMode(!darkMode)} className={clsx("p-2.5 rounded-full transition-all active:scale-95", t.btnGhost)}>
-            {darkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-violet-500" />}
-            </button>
-            <button onClick={() => navigate('/settings')} className={clsx("p-2.5 rounded-full transition-all active:scale-95", t.btnGhost)}>
-            <Settings className="w-5 h-5" />
-            </button>
-            </div>
-            </header>
-        )}
-
         <div className="flex-1 overflow-y-auto relative z-0 w-full max-w-2xl mx-auto">
         {isWorking && (
             <div className="absolute inset-0 z-[150] bg-slate-900/60 backdrop-blur-md flex flex-col items-center justify-center text-white transition-all animate-in fade-in duration-300">
@@ -61,11 +46,11 @@ const SmartPantryShell = () => {
         )}
 
         <div className="animate-in fade-in duration-500">
-        {activeTab === 'pantry' && <PantryTab t={t} setIsModalOpen={setIsModalOpen} />}
-        {activeTab === 'shopping' && <ShoppingTab t={t} setIsModalOpen={setIsModalOpen} />}
-        {activeTab === 'recipes' && <RecipeTab t={t} setActiveTab={setActiveTab} setChatInput={setChatInput} setAttachedRecipe={setAttachedRecipe} setIsModalOpen={setIsModalOpen} />}
-        {activeTab === 'mealplan' && <MealPlanTab t={t} setIsModalOpen={setIsModalOpen} />}
-        {activeTab === 'chat' && <ChatTab t={t} chatInput={chatInput} setChatInput={setChatInput} attachedRecipe={attachedRecipe} setAttachedRecipe={setAttachedRecipe} setIsModalOpen={setIsModalOpen} />}
+        {activeTab === 'pantry' && <PantryTab t={t} setIsModalOpen={setIsModalOpen} darkMode={darkMode} setDarkMode={setDarkMode} navigate={navigate} />}
+        {activeTab === 'shopping' && <ShoppingTab t={t} setIsModalOpen={setIsModalOpen} darkMode={darkMode} setDarkMode={setDarkMode} navigate={navigate} />}
+        {activeTab === 'recipes' && <RecipeTab t={t} setActiveTab={setActiveTab} setChatInput={setChatInput} setAttachedRecipe={setAttachedRecipe} setIsModalOpen={setIsModalOpen} darkMode={darkMode} setDarkMode={setDarkMode} navigate={navigate} />}
+        {activeTab === 'mealplan' && <MealPlanTab t={t} setIsModalOpen={setIsModalOpen} darkMode={darkMode} setDarkMode={setDarkMode} navigate={navigate} />}
+        {activeTab === 'chat' && <ChatTab t={t} chatInput={chatInput} setChatInput={setChatInput} attachedRecipe={attachedRecipe} setAttachedRecipe={setAttachedRecipe} setIsModalOpen={setIsModalOpen} darkMode={darkMode} setDarkMode={setDarkMode} navigate={navigate} />}
         </div>
         </div>
 

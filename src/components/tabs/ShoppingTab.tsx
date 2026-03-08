@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
-import { Plus, Check, X, CheckCircle2, ClipboardCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Check, X, CheckCircle2, ClipboardCheck, ChevronLeft, ChevronRight, Sun, Moon, Settings } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 
-export const ShoppingTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }) => {
+export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }: { t: any, setIsModalOpen: any, darkMode: boolean, setDarkMode: (val: boolean) => void, navigate: any }) => {
     const { shoppingList, mealPlan, ingredients, saveShoppingItem, removeShoppingItem, saveIngredient } = usePantry();
     const [manualShopping, setManualShopping] = useState('');
 
@@ -221,7 +221,38 @@ export const ShoppingTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any
     };
 
     return (
-        <div className="p-4 space-y-4 pb-20">
+        <div className="pb-20">
+        {/* Hero Header - Shopping Theme */}
+        <div className="relative h-40 bg-gradient-to-br from-purple-400 via-indigo-500 to-blue-500 overflow-hidden mb-4">
+        <div className="absolute inset-0">
+        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+        {/* Shopping cart */}
+        <rect x="150" y="90" width="100" height="60" rx="5" fill="white" opacity="0.8"/>
+        <circle cx="170" cy="165" r="8" fill="white" opacity="0.8"/>
+        <circle cx="230" cy="165" r="8" fill="white" opacity="0.8"/>
+        <path d="M 140 80 L 150 90 L 250 90 L 260 80 Z" fill="white" opacity="0.6"/>
+        {/* Items in cart */}
+        <circle cx="180" cy="115" r="10" fill="#4ade80" opacity="0.7"/>
+        <circle cx="210" cy="115" r="10" fill="#ef4444" opacity="0.7"/>
+        <rect x="165" y="130" width="15" height="15" rx="2" fill="#fbbf24" opacity="0.7"/>
+        <rect x="190" y="130" width="15" height="15" rx="2" fill="#f97316" opacity="0.7"/>
+        </svg>
+        </div>
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
+        </button>
+        <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+        <Settings className="w-5 h-5 text-white" />
+        </button>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+        <h1 className="text-2xl font-black text-white drop-shadow-lg">Inköpslista 🛒</h1>
+        <p className="text-white/90 text-sm mt-0.5">Handla smart och effektivt</p>
+        </div>
+        </div>
+
+        <div className="p-4 space-y-4">
         {/* Manual shopping list */}
         <div className={clsx("rounded-2xl p-4 shadow-sm border", t.cardBg, t.border)}>
         <h3 className="font-bold mb-3">Min inköpslista</h3>
@@ -436,6 +467,7 @@ export const ShoppingTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any
                 </div>
             );
         })()}
+        </div>
         </div>
     );
 };

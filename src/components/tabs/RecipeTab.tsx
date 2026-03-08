@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Plus, Heart, Clock, X, MessageCircle, Calendar, RefreshCw, ShoppingCart } from 'lucide-react';
+import { Plus, Heart, Clock, X, MessageCircle, Calendar, RefreshCw, ShoppingCart, Sun, Moon, Settings } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { Recipe, MealType } from '../../types/pantry';
 import { callAI } from '../../services/aiService';
 import { putData, STORES } from '../../services/dbService';
 
-export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, setIsModalOpen }: { t: any, setActiveTab: any, setChatInput: any, setAttachedRecipe: any, setIsModalOpen: any }) => {
+export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, setIsModalOpen, darkMode, setDarkMode, navigate }: { t: any, setActiveTab: any, setChatInput: any, setAttachedRecipe: any, setIsModalOpen: any, darkMode: boolean, setDarkMode: (val: boolean) => void, navigate: any }) => {
     const { ingredients, savedRecipes, generatedRecipes, toggleSavedRecipe, setGeneratedRecipes, setIsWorking, setLoadingMessage, shoppingList, saveShoppingItem, savePlannedMeal } = usePantry();
 
     const [recipeView, setRecipeView] = useState<'generated' | 'saved'>('generated');
@@ -137,7 +137,40 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
         };
 
         return (
-            <div className="p-4 space-y-4 pb-20">
+            <div className="pb-20">
+            {/* Hero Header - Recipe Theme */}
+            <div className="relative h-40 bg-gradient-to-br from-red-400 via-orange-500 to-amber-500 overflow-hidden mb-4">
+            <div className="absolute inset-0">
+            <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+            {/* Cooking pot */}
+            <ellipse cx="200" cy="140" rx="60" ry="35" fill="white" opacity="0.8"/>
+            <rect x="140" y="105" width="120" height="40" rx="5" fill="white" opacity="0.8"/>
+            <rect x="130" y="100" width="10" height="50" rx="3" fill="white" opacity="0.6"/>
+            <rect x="260" y="100" width="10" height="50" rx="3" fill="white" opacity="0.6"/>
+            {/* Steam */}
+            <path d="M 180 90 Q 175 70 180 60" stroke="white" strokeWidth="3" fill="none" opacity="0.5"/>
+            <path d="M 200 85 Q 195 65 200 55" stroke="white" strokeWidth="3" fill="none" opacity="0.5"/>
+            <path d="M 220 90 Q 225 70 220 60" stroke="white" strokeWidth="3" fill="none" opacity="0.5"/>
+            {/* Utensils */}
+            <rect x="280" y="90" width="4" height="70" fill="white" opacity="0.6"/>
+            <circle cx="282" cy="85" r="6" fill="white" opacity="0.6"/>
+            </svg>
+            </div>
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+            <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+            {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
+            </button>
+            <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+            <Settings className="w-5 h-5 text-white" />
+            </button>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+            <h1 className="text-2xl font-black text-white drop-shadow-lg">Recept 🍳</h1>
+            <p className="text-white/90 text-sm mt-0.5">AI-genererade matförslag</p>
+            </div>
+            </div>
+
+            <div className="p-4 space-y-4">
             <div className={clsx("p-4 rounded-2xl shadow-sm border space-y-4", t.cardBg, t.border)}>
             <div className="flex gap-2 bg-black/5 dark:bg-black/20 p-1 rounded-xl">
             <button onClick={() => setRecipeView('generated')} className={clsx("flex-1 py-2 text-xs font-bold rounded-lg transition-all", recipeView === 'generated' ? "bg-white dark:bg-gray-700 shadow text-purple-500" : "opacity-60")}>Förslag</button>
@@ -449,6 +482,7 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
                 </div>
                 </div>
             )}
+            </div>
             </div>
         );
 };

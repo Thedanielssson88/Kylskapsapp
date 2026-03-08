@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, X, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, X, Clock, Sun, Moon, Settings } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { MealType, PlannedMeal } from '../../types/pantry';
 
-export const MealPlanTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any }) => {
+export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }: { t: any, setIsModalOpen: any, darkMode: boolean, setDarkMode: (val: boolean) => void, navigate: any }) => {
     const { mealPlan, removePlannedMeal, savePlannedMeal, savedRecipes, generatedRecipes } = usePantry();
 
     const [currentWeekStart, setCurrentWeekStart] = useState(() => {
@@ -22,46 +22,51 @@ export const MealPlanTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any
     const [viewingMeal, setViewingMeal] = useState<PlannedMeal | null>(null);
 
     return (
-        <div className="flex flex-col h-full pb-24">
-        {/* Beautiful Food Header */}
-        <div className="relative h-48 bg-gradient-to-br from-orange-400 via-amber-500 to-yellow-500 overflow-hidden flex-shrink-0">
-        {/* Decorative food illustration */}
-        <div className="absolute inset-0 opacity-20">
-        <svg viewBox="0 0 200 200" className="w-full h-full">
-        <circle cx="100" cy="100" r="80" fill="white" opacity="0.3"/>
-        <path d="M100 40 Q120 60, 100 80 Q80 60, 100 40" fill="#4ade80" opacity="0.5"/>
-        <circle cx="90" cy="70" r="8" fill="#f97316" opacity="0.6"/>
-        <circle cx="110" cy="70" r="8" fill="#ef4444" opacity="0.6"/>
-        <ellipse cx="100" cy="100" rx="25" ry="15" fill="#fbbf24" opacity="0.7"/>
+        <div className="pb-24">
+        {/* Beautiful Food Hero Header */}
+        <div className="relative h-40 bg-gradient-to-br from-orange-400 via-amber-500 to-yellow-500 overflow-hidden mb-4">
+        <div className="absolute inset-0">
+        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+        {/* Plate */}
+        <ellipse cx="200" cy="120" rx="70" ry="50" fill="white" opacity="0.8"/>
+        {/* Food items on plate */}
+        <circle cx="180" cy="110" r="15" fill="#4ade80" opacity="0.7"/>
+        <circle cx="220" cy="110" r="15" fill="#ef4444" opacity="0.7"/>
+        <circle cx="200" cy="130" r="12" fill="#f97316" opacity="0.7"/>
+        {/* Fork and knife */}
+        <rect x="120" y="100" width="4" height="60" fill="white" opacity="0.6"/>
+        <rect x="276" y="100" width="4" height="60" fill="white" opacity="0.6"/>
         </svg>
         </div>
-
-        {/* Title overlay */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-transparent p-6">
-        <h1 className="text-3xl font-black text-white drop-shadow-lg tracking-tight">Veckoplanering</h1>
-        <p className="text-white/90 text-sm mt-1 font-medium">Planera dina måltider för veckan</p>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+        <h1 className="text-2xl font-black text-white drop-shadow-lg">Veckoplanering 🍽️</h1>
+        <p className="text-white/90 text-sm mt-0.5">Planera dina måltider</p>
         </div>
-        </div>
-
-        {/* Week Navigation */}
-        <div className="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-gray-800 px-4 py-4 flex items-center justify-between shadow-sm flex-shrink-0">
-        <button onClick={() => { const d = new Date(currentWeekStart); d.setDate(d.getDate() - 7); setCurrentWeekStart(d); }} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-        <ChevronLeft className="w-6 h-6" />
+        {/* Settings and Dark Mode buttons */}
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+        <button onClick={() => setDarkMode(!darkMode)} className="p-2.5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all active:scale-95">
+        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
         </button>
-        <div className="text-center">
-        <p className="text-lg font-bold text-gray-900 dark:text-gray-100">
+        <button onClick={() => navigate('/settings')} className="p-2.5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all active:scale-95">
+        <Settings className="w-5 h-5 text-white" />
+        </button>
+        </div>
+        </div>
+
+        <div className="px-4 space-y-4">
+        <div className="flex items-center justify-between bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-sm border border-gray-200 dark:border-gray-800">
+        <button onClick={() => { const d = new Date(currentWeekStart); d.setDate(d.getDate() - 7); setCurrentWeekStart(d); }} className="p-2">
+        <ChevronLeft className="w-5 h-5" />
+        </button>
+        <span className="font-bold">
         {currentWeekStart.toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })} - {new Date(currentWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short' })}
-        </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">Vecka {Math.ceil((currentWeekStart.getTime() - new Date(currentWeekStart.getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000))}</p>
-        </div>
-        <button onClick={() => { const d = new Date(currentWeekStart); d.setDate(d.getDate() + 7); setCurrentWeekStart(d); }} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-        <ChevronRight className="w-6 h-6" />
+        </span>
+        <button onClick={() => { const d = new Date(currentWeekStart); d.setDate(d.getDate() + 7); setCurrentWeekStart(d); }} className="p-2">
+        <ChevronRight className="w-5 h-5" />
         </button>
         </div>
 
-        {/* Days List */}
-        <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-slate-950">
-        <div className="p-4 space-y-4">
+        <div className="space-y-3">
         {Array.from({ length: 7 }).map((_, i) => {
             const date = new Date(currentWeekStart);
             date.setDate(date.getDate() + i);
@@ -74,79 +79,39 @@ export const MealPlanTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any
             const dayMeals = mealPlan.filter(m => m.date === dateStr);
             const dayName = date.toLocaleDateString('sv-SE', { weekday: 'long' });
 
-            const isToday = dateStr === new Date().toISOString().split('T')[0];
-            const isSunday = date.getDay() === 0;
-
             return (
-                <div key={dateStr} className={clsx("bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border-2 transition-all", isToday ? "border-blue-500 ring-2 ring-blue-500/20" : "border-gray-200 dark:border-gray-800")}>
-                {/* Day Header */}
-                <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800">
-                <div className="flex items-center gap-3">
-                <span className={clsx("font-bold text-lg capitalize", isToday ? "text-blue-600 dark:text-blue-400" : isSunday ? "text-blue-500" : "text-gray-900 dark:text-gray-100")}>
-                {dayName}, {date.getDate()} {date.toLocaleDateString('sv-SE', { month: 'short' })}
-                </span>
-                {dayMeals.length > 0 && (
-                    <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
-                    <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
-                    <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd"/>
-                    </svg>
-                    <span className="text-sm font-bold text-gray-700 dark:text-gray-300">{dayMeals.length}</span>
-                    </div>
-                )}
+                <div key={dateStr} className={clsx("border rounded-lg p-3", t.cardBg, t.cardBorder)}>
+                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                <span className="font-bold capitalize">{dayName}, {date.getDate()} {date.toLocaleDateString('sv-SE', { month: 'short' })}</span>
+                {dayMeals.length > 0 && <span className="bg-purple-500/20 text-purple-600 text-xs px-2 py-0.5 rounded-full font-bold">{dayMeals.length}</span>}
                 </div>
-                <button onClick={() => { setSelectedDate(dateStr); setShowAddMealModal(true); setIsModalOpen(true); }} className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 text-white transition-all active:scale-95 shadow-lg">
-                <Plus className="w-6 h-6" />
+                <button onClick={() => { setSelectedDate(dateStr); setShowAddMealModal(true); setIsModalOpen(true); }} className="text-purple-600">
+                <Plus className="w-5 h-5" />
                 </button>
                 </div>
-                {/* Meals for this day */}
-                {dayMeals.length > 0 ? (
-                    <div className="p-4 space-y-3">
-                    {dayMeals.map(meal => {
-                        const mealColors = {
-                            breakfast: { bg: 'bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20', border: 'border-l-yellow-500', text: 'text-yellow-700 dark:text-yellow-400', label: 'Frukost', icon: '🌅' },
-                            lunch: { bg: 'bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20', border: 'border-l-orange-500', text: 'text-orange-700 dark:text-orange-400', label: 'Lunch', icon: '🍽️' },
-                            dinner: { bg: 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20', border: 'border-l-blue-600', text: 'text-blue-700 dark:text-blue-400', label: 'Middag', icon: '🌙' },
-                            snack: { bg: 'bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20', border: 'border-l-pink-500', text: 'text-pink-700 dark:text-pink-400', label: 'Mellanmål', icon: '🍪' }
-                        };
-                        const color = mealColors[meal.mealType];
-
-                        return (
-                            <div key={meal.id} className={clsx("rounded-xl border-l-[6px] p-4 cursor-pointer hover:shadow-md transition-all active:scale-[0.98]", color.bg, color.border)} onClick={() => setViewingMeal(meal)}>
-                            <div className="flex items-start justify-between gap-3">
-                            <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                            <span className="text-lg">{color.icon}</span>
-                            <span className={clsx("text-xs uppercase font-bold tracking-wide", color.text)}>{color.label}</span>
-                            </div>
-                            <h3 className="font-bold text-gray-900 dark:text-gray-100 line-clamp-2 leading-tight">{meal.recipe.title}</h3>
-                            {meal.recipe.prepTime && (
-                                <div className="flex items-center gap-1 mt-2 text-gray-600 dark:text-gray-400">
-                                <Clock className="w-3 h-3" />
-                                <span className="text-xs">{meal.recipe.prepTime}</span>
-                                </div>
-                            )}
-                            </div>
-                            <button onClick={(e) => { e.stopPropagation(); removePlannedMeal(meal.id); }} className="flex-shrink-0 p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-full text-red-500 transition-colors">
-                            <X className="w-5 h-5" />
-                            </button>
-                            </div>
-                            </div>
-                        );
-                    })}
-                    </div>
-                ) : (
-                    <div className="p-8 text-center">
-                    <p className="text-gray-400 dark:text-gray-600 text-sm italic">Inga planerade måltider</p>
+                {dayMeals.length > 0 && (
+                    <div className="space-y-2 mt-2">
+                    {dayMeals.map(meal => (
+                        <div key={meal.id} className={clsx("p-2 rounded border-l-4 text-gray-900 dark:text-gray-100 cursor-pointer hover:opacity-80 transition-opacity", meal.mealType === 'breakfast' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' : meal.mealType === 'lunch' ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' : meal.mealType === 'dinner' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-pink-500 bg-pink-50 dark:bg-pink-900/20')} onClick={() => setViewingMeal(meal)}>
+                        <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                        <span className="text-[10px] uppercase font-bold opacity-60">{meal.mealType === 'breakfast' ? 'Frukost' : meal.mealType === 'lunch' ? 'Lunch' : meal.mealType === 'dinner' ? 'Middag' : 'Mellanmål'}</span>
+                        <p className="font-bold text-sm">{meal.recipe.title}</p>
+                        </div>
+                        <button onClick={(e) => { e.stopPropagation(); removePlannedMeal(meal.id); }} className="text-red-500 p-1">
+                        <X className="w-4 h-4" />
+                        </button>
+                        </div>
+                        </div>
+                    ))}
                     </div>
                 )}
                 </div>
             );
         })}
         </div>
-        </div>
 
-        {/* Modals */}
         {showAddMealModal && selectedDate && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-4 pb-safe">
             <div className={clsx("w-full sm:max-w-md rounded-t-3xl sm:rounded-2xl p-6 space-y-4 max-h-[85vh] overflow-y-auto", t.cardBg, t.cardBorder)}>
@@ -191,6 +156,8 @@ export const MealPlanTab = ({ t, setIsModalOpen }: { t: any, setIsModalOpen: any
                 </div>
                 </div>
             )}
+            </div>
+            </div>
         )}
         </div>
         </div>

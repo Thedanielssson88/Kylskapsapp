@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, Square, Volume2, VolumeX } from 'lucide-react';
+import { Send, Mic, Square, Volume2, VolumeX, Sun, Moon, Settings } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { LocalAgentMessage, Recipe } from '../../types/pantry';
@@ -17,6 +17,10 @@ interface ChatTabProps {
     setChatInput: (val: string) => void;
     attachedRecipe: Recipe | null;
     setAttachedRecipe: (val: Recipe | null) => void;
+    setIsModalOpen: any;
+    darkMode: boolean;
+    setDarkMode: (val: boolean) => void;
+    navigate: any;
 }
 
 // Formateringsfunktioner (Markdown)
@@ -56,7 +60,7 @@ const renderMarkdown = (text: string) => {
     return <div className="text-sm leading-relaxed">{elements}</div>;
 };
 
-export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttachedRecipe }: ChatTabProps) => {
+export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttachedRecipe, setIsModalOpen, darkMode, setDarkMode, navigate }: ChatTabProps) => {
     const { ingredients, isWorking } = usePantry();
     const [chatMessages, setChatMessages] = useState<LocalAgentMessage[]>([
         { id: '1', role: 'agent', content: 'Hej! Fota dina förvaringsutrymmen så hjälper jag dig att hitta på något gott att äta!', timestamp: Date.now() }
@@ -200,9 +204,41 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
     };
 
     return (
-        <div className="flex flex-col h-full relative bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <div className="flex flex-col h-full relative">
+        {/* Hero Header - Chat Theme */}
+        <div className="relative h-40 bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-500 overflow-hidden flex-shrink-0">
+        <div className="absolute inset-0">
+        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
+        {/* Chat bubbles */}
+        <rect x="100" y="80" width="80" height="50" rx="15" fill="white" opacity="0.8"/>
+        <polygon points="100,110 85,115 100,120" fill="white" opacity="0.8"/>
+        <rect x="220" y="100" width="80" height="50" rx="15" fill="white" opacity="0.6"/>
+        <polygon points="300,125 315,130 300,135" fill="white" opacity="0.6"/>
+        {/* Message lines */}
+        <line x1="115" y1="95" x2="165" y2="95" stroke="#333" strokeWidth="3" opacity="0.3"/>
+        <line x1="115" y1="105" x2="155" y2="105" stroke="#333" strokeWidth="3" opacity="0.3"/>
+        <line x1="115" y1="115" x2="160" y2="115" stroke="#333" strokeWidth="3" opacity="0.3"/>
+        <line x1="235" y1="115" x2="285" y2="115" stroke="#333" strokeWidth="3" opacity="0.3"/>
+        <line x1="235" y1="125" x2="275" y2="125" stroke="#333" strokeWidth="3" opacity="0.3"/>
+        <line x1="235" y1="135" x2="280" y2="135" stroke="#333" strokeWidth="3" opacity="0.3"/>
+        </svg>
+        </div>
+        <div className="absolute top-4 right-4 flex items-center gap-2">
+        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
+        </button>
+        <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
+        <Settings className="w-5 h-5 text-white" />
+        </button>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
+        <h1 className="text-2xl font-black text-white drop-shadow-lg">AI-Kock 💬</h1>
+        <p className="text-white/90 text-sm mt-0.5">Chatta med din matassistent</p>
+        </div>
+        </div>
+
         {/* Chat Messages - iOS/WhatsApp Style */}
-        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 pb-64">
+        <div className="flex-1 overflow-y-auto px-4 py-6 space-y-3 pb-64 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
         {chatMessages.map((msg, idx) => {
             const prevMsg = chatMessages[idx - 1];
             const showTimestamp = !prevMsg || (new Date(msg.timestamp).getTime() - new Date(prevMsg.timestamp).getTime() > 60000);
