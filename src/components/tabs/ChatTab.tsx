@@ -205,18 +205,18 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
 
     return (
         <div className="flex flex-col h-full relative">
-        {/* Ny ren Hero Header för Chatt */}
-        <div className="relative pt-12 pb-2 px-6 flex-shrink-0 bg-[#F7F4EB] dark:bg-slate-900 border-b border-[#E0E0E0]/50 dark:border-slate-800">
+        {/* Clean Header */}
+        <div className="relative pt-14 pb-4 px-6 flex-shrink-0 z-10 bg-transparent">
             <div className="absolute top-4 right-4 flex items-center gap-2">
-                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
                     {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
-                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
                     <Settings className="w-5 h-5" />
                 </button>
             </div>
-            <h1 className="text-3xl font-semibold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">AI-Kock</h1>
-            <p className="text-[#7A7A7A] text-sm font-medium">Chatta med din matassistent</p>
+            <h1 className="text-3xl font-bold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">AI-Kock</h1>
+            <p className="text-[#7A7A7A] text-sm font-medium">Din personliga matassistent</p>
         </div>
 
         {/* Chat Messages - iOS/WhatsApp Style */}
@@ -242,7 +242,7 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
                     <div className={clsx(
                         "max-w-[75%] rounded-[20px] px-4 py-3 shadow-[0_2px_10px_rgba(0,0,0,0.02)] border border-[#E0E0E0]/30",
                         msg.role === 'user'
-                            ? "bg-[#C48B71] text-white rounded-br-md" // Terrakotta för användaren
+                            ? "bg-[#C48B71] text-white rounded-br-md shadow-sm" // Terrakotta för användaren
                             : "bg-white dark:bg-slate-800 text-[#2D2D2D] dark:text-slate-100 rounded-bl-md"
                     )}>
                     <div className="text-[15px] leading-relaxed">
@@ -298,7 +298,7 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
                 className={clsx(
                 "w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-md active:scale-95",
                 chatInput.trim() && !isWorking
-                    ? "bg-[#C48B71] text-white hover:bg-[#b57d63]" // Terrakotta
+                    ? "bg-[#C48B71] hover:bg-[#b57d63] text-white" // Terrakotta
                     : "bg-[#E8E5DC] text-[#7A7A7A]"
                 )}
             >
@@ -307,7 +307,7 @@ export const ChatTab = ({ t, chatInput, setChatInput, attachedRecipe, setAttache
             </div>
         ) : (
             <div className="flex flex-col items-center justify-center p-6 gap-3">
-            <button onClick={toggleRecording} className={clsx("w-20 h-20 rounded-full flex items-center justify-center text-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all active:scale-95", isRecording ? "bg-[#C48B71] animate-pulse" : "bg-[#A9B8A2]")}>
+            <button onClick={toggleRecording} className={clsx("w-20 h-20 rounded-full flex items-center justify-center text-white shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all active:scale-95", isRecording ? "bg-[#C48B71] animate-pulse" : "bg-[#A9B8A2] hover:bg-[#98a791]")}>
             {isRecording ? <Square size={32} fill="currentColor" /> : <Mic size={32} />}
             </button>
             <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">

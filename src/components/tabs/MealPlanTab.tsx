@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Plus, X, Clock, Sun, Moon, Settings } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, X, Clock, Sun, Moon, Settings, ChefHat } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { MealType, PlannedMeal } from '../../types/pantry';
@@ -23,34 +23,18 @@ export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
 
     return (
         <div className="pb-24">
-        {/* Beautiful Food Hero Header */}
-        <div className="relative h-40 bg-gradient-to-br from-orange-400 via-amber-500 to-yellow-500 overflow-hidden mb-4">
-        <div className="absolute inset-0">
-        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-        {/* Plate */}
-        <ellipse cx="200" cy="120" rx="70" ry="50" fill="white" opacity="0.8"/>
-        {/* Food items on plate */}
-        <circle cx="180" cy="110" r="15" fill="#4ade80" opacity="0.7"/>
-        <circle cx="220" cy="110" r="15" fill="#ef4444" opacity="0.7"/>
-        <circle cx="200" cy="130" r="12" fill="#f97316" opacity="0.7"/>
-        {/* Fork and knife */}
-        <rect x="120" y="100" width="4" height="60" fill="white" opacity="0.6"/>
-        <rect x="276" y="100" width="4" height="60" fill="white" opacity="0.6"/>
-        </svg>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-        <h1 className="text-2xl font-black text-white drop-shadow-lg">Veckoplanering 🍽️</h1>
-        <p className="text-white/90 text-sm mt-0.5">Planera dina måltider</p>
-        </div>
-        {/* Settings and Dark Mode buttons */}
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2.5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all active:scale-95">
-        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
-        </button>
-        <button onClick={() => navigate('/settings')} className="p-2.5 rounded-full bg-white/20 backdrop-blur-md hover:bg-white/30 transition-all active:scale-95">
-        <Settings className="w-5 h-5 text-white" />
-        </button>
-        </div>
+        {/* Clean Header */}
+        <div className="relative pt-14 pb-2 px-6">
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
+                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
+                    <Settings className="w-5 h-5" />
+                </button>
+            </div>
+            <h1 className="text-3xl font-bold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">Veckoplanering</h1>
+            <p className="text-[#7A7A7A] text-sm font-medium">Planera dina måltider</p>
         </div>
 
         <div className="px-4 space-y-4">
@@ -137,16 +121,14 @@ export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                     {recipe.imageUrl ? (
                         <div className="relative h-32 overflow-hidden">
                         <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-3 py-3 text-white">
-                        <h3 className="font-bold text-base leading-tight">{recipe.title}</h3>
-                        </div>
                         </div>
                     ) : (
-                        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 px-3 py-3 text-white">
-                        <h3 className="font-bold text-base leading-tight">{recipe.title}</h3>
+                        <div className="h-32 bg-[#E3EAE0] flex items-center justify-center text-[#A9B8A2]">
+                            <ChefHat size={32} />
                         </div>
                     )}
-                    <div className="p-3">
+                    <div className="p-3 text-[#2D2D2D] dark:text-white">
+                    <h3 className="font-bold text-base leading-tight mb-1">{recipe.title}</h3>
                     <p className="text-xs opacity-70 line-clamp-2 mb-2">
                     {recipe.description || recipe.instructions.split('\n')[0].substring(0, 100) + '...'}
                     </p>

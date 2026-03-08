@@ -24,18 +24,17 @@ const SmartPantryShell = () => {
     useEffect(() => { localStorage.setItem('NANO_DARK_MODE', String(darkMode)); }, [darkMode]);
 
     const t = useMemo(() => darkMode ? {
-        bg: 'bg-slate-900', bgAlt: 'bg-slate-800', bgInput: 'bg-slate-800',
-        border: 'border-slate-700', text: 'text-[#F7F4EB]', textMuted: 'text-[#A9B8A2]', textWhite: 'text-white',
-        cardBg: 'bg-slate-800 shadow-md', btnPrimary: 'bg-[#C48B71] hover:bg-[#b57d63] text-white',
-        btnGhost: 'hover:bg-slate-700 text-slate-300', navBg: 'bg-slate-900/95', activeTabBg: 'bg-[#A9B8A2]/20 text-[#A9B8A2]'
+        bg: 'bg-[#121212]', bgAlt: 'bg-[#1E1E1E]', bgInput: 'bg-[#2A2A2A]',
+        border: 'border-white/5', text: 'text-[#F7F4EB]', textMuted: 'text-[#A9B8A2]', textWhite: 'text-white',
+        cardBg: 'bg-[#1E1E1E] shadow-xl', btnPrimary: 'bg-[#C48B71] hover:bg-[#b57d63] text-white shadow-lg',
+        btnGhost: 'hover:bg-white/5 text-gray-300', navBg: 'bg-[#1E1E1E]/90', activeTabBg: 'bg-[#A9B8A2] text-white'
     } : {
-        // Nya ljusa temat från referensbilden
-        bg: 'bg-[#F7F4EB]', bgAlt: 'bg-[#F7F4EB]', bgInput: 'bg-white',
-        border: 'border-[#E0E0E0]/50', text: 'text-[#2D2D2D]', textMuted: 'text-[#7A7A7A]', textWhite: 'text-white',
-        cardBg: 'bg-white shadow-[0_4px_15px_rgba(0,0,0,0.04)]', 
-        btnPrimary: 'bg-[#C48B71] hover:bg-[#b57d63] text-white shadow-sm', // Terrakotta
-        btnGhost: 'hover:bg-[#E8E5DC] text-[#2D2D2D]', navBg: 'bg-[#F7F4EB]/95', 
-        activeTabBg: 'bg-[#E3EAE0] text-[#2D2D2D]' // Ljus Salviagrön bakgrund för aktiv flik
+        bg: 'bg-[#F7F4EB]', bgAlt: 'bg-white', bgInput: 'bg-gray-50',
+        border: 'border-black/5', text: 'text-[#2D2D2D]', textMuted: 'text-[#7A7A7A]', textWhite: 'text-white',
+        cardBg: 'bg-white shadow-[0_8px_30px_rgba(0,0,0,0.03)]', 
+        btnPrimary: 'bg-[#C48B71] hover:bg-[#b57d63] text-white shadow-md',
+        btnGhost: 'hover:bg-[#E8E5DC] text-[#2D2D2D]', navBg: 'bg-white/90', 
+        activeTabBg: 'bg-[#2D2D2D] text-white' 
     }, [darkMode]);
 
     return (
@@ -57,30 +56,36 @@ const SmartPantryShell = () => {
         </div>
         </div>
 
-        {/* Bottom Bar - Döljs vid modal */}
+        {/* Ny svävande Premium Bottom Nav */}
         {!isModalOpen && (
-            <div className={clsx("fixed bottom-0 left-0 right-0 border-t backdrop-blur-xl z-10 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4 pb-safe", t.navBg, t.border)}>
-            <div className="flex items-center justify-around px-2 py-2 max-w-md mx-auto">
-            <button onClick={() => setActiveTab('pantry')} className={clsx("flex-1 py-2 px-1 rounded-2xl flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'pantry' ? t.activeTabBg : "text-slate-400 hover:text-slate-500")}>
+            <div className="fixed bottom-6 left-4 right-4 z-10 transition-all duration-300 animate-in fade-in slide-in-from-bottom-8">
+            <div className={clsx("flex items-center justify-between px-2 py-2 max-w-md mx-auto rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.08)] backdrop-blur-2xl border", t.navBg, t.border)}>
+            
+            <button onClick={() => setActiveTab('pantry')} className={clsx("flex-1 py-3 px-2 rounded-full flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'pantry' ? t.activeTabBg : "text-[#7A7A7A] hover:text-[#2D2D2D] dark:hover:text-white")}>
             <List className="w-5 h-5" />
-            <span className="text-[10px] font-bold">Lagring</span>
+            <span className="text-[10px] font-bold tracking-wide">Lagring</span>
             </button>
-            <button onClick={() => setActiveTab('shopping')} className={clsx("flex-1 py-2 px-1 rounded-2xl flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'shopping' ? t.activeTabBg : "text-slate-400 hover:text-slate-500")}>
+            
+            <button onClick={() => setActiveTab('shopping')} className={clsx("flex-1 py-3 px-2 rounded-full flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'shopping' ? t.activeTabBg : "text-[#7A7A7A] hover:text-[#2D2D2D] dark:hover:text-white")}>
             <ShoppingCart className="w-5 h-5" />
-            <span className="text-[10px] font-bold">Inköp</span>
+            <span className="text-[10px] font-bold tracking-wide">Inköp</span>
             </button>
-            <button onClick={() => setActiveTab('recipes')} className={clsx("flex-1 py-2 px-1 rounded-2xl flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'recipes' ? t.activeTabBg : "text-slate-400 hover:text-slate-500")}>
+            
+            <button onClick={() => setActiveTab('recipes')} className={clsx("flex-1 py-3 px-2 rounded-full flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'recipes' ? t.activeTabBg : "text-[#7A7A7A] hover:text-[#2D2D2D] dark:hover:text-white")}>
             <ChefHat className="w-5 h-5" />
-            <span className="text-[10px] font-bold">Recept</span>
+            <span className="text-[10px] font-bold tracking-wide">Recept</span>
             </button>
-            <button onClick={() => setActiveTab('mealplan')} className={clsx("flex-1 py-2 px-1 rounded-2xl flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'mealplan' ? t.activeTabBg : "text-slate-400 hover:text-slate-500")}>
+            
+            <button onClick={() => setActiveTab('mealplan')} className={clsx("flex-1 py-3 px-2 rounded-full flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'mealplan' ? t.activeTabBg : "text-[#7A7A7A] hover:text-[#2D2D2D] dark:hover:text-white")}>
             <Calendar className="w-5 h-5" />
-            <span className="text-[10px] font-bold">Vecka</span>
+            <span className="text-[10px] font-bold tracking-wide">Vecka</span>
             </button>
-            <button onClick={() => setActiveTab('chat')} className={clsx("flex-1 py-2 px-1 rounded-2xl flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'chat' ? t.activeTabBg : "text-slate-400 hover:text-slate-500")}>
+            
+            <button onClick={() => setActiveTab('chat')} className={clsx("flex-1 py-3 px-2 rounded-full flex flex-col items-center gap-1 transition-all active:scale-95", activeTab === 'chat' ? t.activeTabBg : "text-[#7A7A7A] hover:text-[#2D2D2D] dark:hover:text-white")}>
             <MessageSquare className="w-5 h-5" />
-            <span className="text-[10px] font-bold">Chatt</span>
+            <span className="text-[10px] font-bold tracking-wide">Chatt</span>
             </button>
+
             </div>
             </div>
         )}

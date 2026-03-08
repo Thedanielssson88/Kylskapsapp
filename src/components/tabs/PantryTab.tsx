@@ -243,8 +243,8 @@ export const PantryTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }
 
         <div className={clsx("rounded-2xl p-4 shadow-sm border", t.cardBg, t.border)}>
         <div className="flex gap-2 mb-4">
-        <input type="text" value={manualIngredient} onChange={e => setManualIngredient(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveIngredient({ id: Date.now().toString(), name: manualIngredient, source: 'manual', location: activeLocation, category: 'Övrigt' }).then(()=>setManualIngredient(''))} placeholder="Lägg till manuellt..." className={clsx("flex-1 px-3 py-2 rounded-xl text-sm outline-none border", t.bgInput, t.border)} />
-        <button onClick={() => saveIngredient({ id: Date.now().toString(), name: manualIngredient, source: 'manual', location: activeLocation, category: 'Övrigt' }).then(()=>setManualIngredient(''))} className={clsx("px-4 rounded-xl font-bold", t.btnPrimary)}><Plus className="w-5 h-5"/></button>
+        <input type="text" value={manualIngredient} onChange={e => setManualIngredient(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveIngredient({ id: Date.now().toString(), name: manualIngredient, source: 'manual', location: activeLocation, category: 'Övrigt' }).then(()=>setManualIngredient(''))} placeholder="Lägg till manuellt..." className={clsx("flex-1 px-5 py-3.5 rounded-2xl text-[15px] outline-none transition-all", t.bgInput)} />
+        <button onClick={() => saveIngredient({ id: Date.now().toString(), name: manualIngredient, source: 'manual', location: activeLocation, category: 'Övrigt' }).then(()=>setManualIngredient(''))} className={clsx("px-5 rounded-2xl font-bold shadow-sm transition-transform active:scale-95", t.btnPrimary)}><Plus className="w-5 h-5"/></button>
         </div>
 
         {Object.keys(groupedIngredients).length === 0 ? (

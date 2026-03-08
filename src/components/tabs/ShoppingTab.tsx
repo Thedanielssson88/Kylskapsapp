@@ -222,18 +222,18 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
 
     return (
         <div className="pb-20">
-        {/* Ny ren Hero Header för Inköp */}
-        <div className="relative pt-12 pb-2 px-6 bg-[#F7F4EB] dark:bg-slate-900 border-b border-[#E0E0E0]/50 dark:border-slate-800 mb-4">
+        {/* Clean Header */}
+        <div className="relative pt-14 pb-2 px-6">
             <div className="absolute top-4 right-4 flex items-center gap-2">
-                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
                     {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                 </button>
-                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
                     <Settings className="w-5 h-5" />
                 </button>
             </div>
-            <h1 className="text-3xl font-semibold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">Min inköpslista</h1>
-            <p className="text-[#7A7A7A] text-sm font-medium pb-4">Handla smart och effektivt</p>
+            <h1 className="text-3xl font-bold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">Inköpslista</h1>
+            <p className="text-[#7A7A7A] text-sm font-medium">Handla smart och effektivt</p>
         </div>
 
         <div className="p-4 space-y-4">
@@ -241,8 +241,8 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
         <div className={clsx("rounded-2xl p-4 shadow-sm border", t.cardBg, t.border)}>
         <h3 className="font-bold mb-3">Min inköpslista</h3>
         <div className="flex gap-2 mb-4">
-        <input type="text" value={manualShopping} onChange={e => setManualShopping(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveShoppingItem({ id: Date.now().toString(), name: manualShopping, checked: false }).then(()=>setManualShopping(''))} placeholder="Lägg till vara..." className={clsx("flex-1 px-3 py-2 rounded-xl text-sm outline-none border", t.bgInput, t.border)} />
-        <button onClick={() => saveShoppingItem({ id: Date.now().toString(), name: manualShopping, checked: false }).then(()=>setManualShopping(''))} className={clsx("px-4 rounded-xl font-bold", t.btnPrimary)}><Plus className="w-5 h-5"/></button>
+        <input type="text" value={manualShopping} onChange={e => setManualShopping(e.target.value)} onKeyDown={e => e.key === 'Enter' && saveShoppingItem({ id: Date.now().toString(), name: manualShopping, checked: false }).then(()=>setManualShopping(''))} placeholder="Lägg till vara..." className={clsx("flex-1 px-5 py-3.5 rounded-2xl text-[15px] outline-none transition-all", t.bgInput)} />
+        <button onClick={() => saveShoppingItem({ id: Date.now().toString(), name: manualShopping, checked: false }).then(()=>setManualShopping(''))} className={clsx("px-5 rounded-2xl font-bold shadow-sm transition-transform active:scale-95", t.btnPrimary)}><Plus className="w-5 h-5"/></button>
         </div>
         <div className="space-y-2">
         {shoppingList.length === 0 ? (
