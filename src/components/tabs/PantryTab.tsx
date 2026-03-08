@@ -215,18 +215,18 @@ export const PantryTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }
             <img src={previewImage} className="fixed inset-0 w-full h-full object-cover opacity-20 z-40 pointer-events-none" alt="Scanning" />
         )}
 
-        {/* Ny ren Hero Header */}
-        <div className="relative pt-12 pb-6 px-6">
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
-        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
-        <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
-        <Settings className="w-5 h-5" />
-        </button>
-        </div>
-        <h1 className="text-3xl font-semibold text-[#2D2D2D] mb-1 tracking-tight">Lagring & Inventering</h1>
-        <p className="text-[#7A7A7A] text-sm font-medium">Kylskåp, frys och skafferi</p>
+        {/* Clean Premium Header */}
+        <div className="relative pt-12 pb-6 px-6 bg-transparent">
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
+                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
+                    <Settings className="w-5 h-5" />
+                </button>
+            </div>
+            <h1 className="text-3xl font-bold text-black dark:text-white mb-1 tracking-tight">Lagring</h1>
+            <p className="text-[#8E8E93] text-sm font-medium">Ditt smarta skafferi</p>
         </div>
 
         <div className="px-4 space-y-4">
@@ -252,10 +252,10 @@ export const PantryTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }
         ) : (
             Object.entries(groupedIngredients).map(([category, items]) => (
                 <div key={category} className="mb-4 last:mb-0">
-                <h3 className="text-[10px] font-bold uppercase tracking-wider text-purple-500 mb-2">{category}</h3>
+                <h3 className="text-[10px] font-bold uppercase tracking-wider text-black dark:text-[#8E8E93] mb-2">{category}</h3>
                 <div className="flex flex-col gap-2">
                 {items.map(ing => (
-                    <div key={ing.id} onClick={() => { setEditingIngredient(ing); setIsModalOpen(true); }} className={clsx("flex flex-col px-3 py-2 rounded-xl border cursor-pointer hover:border-purple-500/50 transition-colors", ing.source === 'scanned' ? 'bg-purple-500/5 border-purple-500/20' : t.bgInput)}>
+                    <div key={ing.id} onClick={() => { setEditingIngredient(ing); setIsModalOpen(true); }} className={clsx("flex flex-col px-3 py-2 rounded-xl border cursor-pointer hover:border-black dark:hover:border-white transition-colors", ing.source === 'scanned' ? 'bg-[#34C759]/10 border-[#34C759]/30' : t.bgInput)}>
                     <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold">{ing.name}</span>
                     <span className="text-xs opacity-50 flex items-center gap-1"><Edit2 className="w-3 h-3"/></span>

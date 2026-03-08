@@ -23,8 +23,8 @@ export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
 
     return (
         <div className="pb-24">
-        {/* Clean Header */}
-        <div className="relative pt-14 pb-2 px-6">
+        {/* Clean Premium Header */}
+        <div className="relative pt-12 pb-6 px-6 bg-transparent">
             <div className="absolute top-4 right-4 flex items-center gap-2">
                 <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
                     {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -33,8 +33,8 @@ export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                     <Settings className="w-5 h-5" />
                 </button>
             </div>
-            <h1 className="text-3xl font-bold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">Veckoplanering</h1>
-            <p className="text-[#7A7A7A] text-sm font-medium">Planera dina måltider</p>
+            <h1 className="text-3xl font-bold text-black dark:text-white mb-1 tracking-tight">Vecka</h1>
+            <p className="text-[#8E8E93] text-sm font-medium">Måltidsplanering</p>
         </div>
 
         <div className="px-4 space-y-4">
@@ -77,7 +77,7 @@ export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 {dayMeals.length > 0 && (
                     <div className="space-y-2 mt-2">
                     {dayMeals.map(meal => (
-                        <div key={meal.id} className={clsx("p-2 rounded border-l-4 text-gray-900 dark:text-gray-100 cursor-pointer hover:opacity-80 transition-opacity", meal.mealType === 'breakfast' ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20' : meal.mealType === 'lunch' ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' : meal.mealType === 'dinner' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-pink-500 bg-pink-50 dark:bg-pink-900/20')} onClick={() => setViewingMeal(meal)}>
+                        <div key={meal.id} className={clsx("p-2 rounded border-l-4 text-gray-900 dark:text-gray-100 cursor-pointer hover:opacity-80 transition-opacity", meal.mealType === 'breakfast' ? 'border-[#FF9500]/40 bg-[#FF9500]/5' : meal.mealType === 'lunch' ? 'border-[#34C759]/50 bg-[#34C759]/5' : meal.mealType === 'dinner' ? 'border-[#007AFF]/40 bg-[#007AFF]/5' : 'border-[#8E8E93]/20 bg-black/5 dark:bg-white/5')} onClick={() => setViewingMeal(meal)}>
                         <div className="flex items-start justify-between">
                         <div className="flex-1">
                         <span className="text-[10px] uppercase font-bold opacity-60">{meal.mealType === 'breakfast' ? 'Frukost' : meal.mealType === 'lunch' ? 'Lunch' : meal.mealType === 'dinner' ? 'Middag' : 'Mellanmål'}</span>
@@ -123,7 +123,7 @@ export const MealPlanTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                         <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                         </div>
                     ) : (
-                        <div className="h-32 bg-[#E3EAE0] flex items-center justify-center text-[#A9B8A2]">
+                        <div className="h-32 bg-[#E9E9EB] dark:bg-[#2C2C2E] flex items-center justify-center text-[#8E8E93]">
                             <ChefHat size={32} />
                         </div>
                     )}

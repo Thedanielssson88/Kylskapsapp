@@ -222,8 +222,8 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
 
     return (
         <div className="pb-20">
-        {/* Clean Header */}
-        <div className="relative pt-14 pb-2 px-6">
+        {/* Clean Premium Header */}
+        <div className="relative pt-12 pb-6 px-6 bg-transparent">
             <div className="absolute top-4 right-4 flex items-center gap-2">
                 <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
                     {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
@@ -232,8 +232,8 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                     <Settings className="w-5 h-5" />
                 </button>
             </div>
-            <h1 className="text-3xl font-bold text-[#2D2D2D] dark:text-white mb-1 tracking-tight">Inköpslista</h1>
-            <p className="text-[#7A7A7A] text-sm font-medium">Handla smart och effektivt</p>
+            <h1 className="text-3xl font-bold text-black dark:text-white mb-1 tracking-tight">Inköpslista</h1>
+            <p className="text-[#8E8E93] text-sm font-medium">Bocka av det du behöver</p>
         </div>
 
         <div className="p-4 space-y-4">
@@ -250,7 +250,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
         ) : (
             shoppingList.map(item => (
                 <div key={item.id} className={clsx("flex items-center gap-3 p-3 border rounded-xl transition-colors", item.checked ? "opacity-50 " + t.bgAlt : t.bgInput)}>
-                <button onClick={() => saveShoppingItem({...item, checked: !item.checked})} className={clsx("w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors", item.checked ? "bg-[#A9B8A2] border-[#A9B8A2]" : "border-[#E0E0E0] bg-white")}>
+                <button onClick={() => saveShoppingItem({...item, checked: !item.checked})} className={clsx("w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors", item.checked ? "bg-[#34C759] border-[#34C759] text-white" : "border-[#3C3C43]/20 bg-white")}>
                 {item.checked && <Check className="w-4 h-4 text-white" />}
                 </button>
                 <span className={clsx("flex-1 text-sm font-medium", item.checked && "line-through")}>{item.name}</span>
@@ -337,12 +337,12 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 <div className={clsx("w-full sm:max-w-md h-[85vh] sm:h-auto rounded-t-[2rem] sm:rounded-[2rem] overflow-hidden flex flex-col shadow-2xl relative", t.cardBg)}>
 
                 {/* Header och Progress */}
-                <div className="bg-[#F7F4EB] p-6 pb-8 text-[#2D2D2D] flex-shrink-0 border-b border-[#E0E0E0]/50">
+                <div className="bg-[#F2F2F7] dark:bg-slate-800 p-6 pb-8 text-black dark:text-white flex-shrink-0 border-b border-[#3C3C43]/10">
                 <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold flex items-center gap-2">
                 <ClipboardCheck className="w-5 h-5" /> Inventering
                 </h2>
-                <button onClick={() => { setShowInventoryDialog(false); setIsModalOpen(false); }} className="p-2 bg-black/5 text-[#2D2D2D] hover:bg-black/10 rounded-full transition-colors">
+                <button onClick={() => { setShowInventoryDialog(false); setIsModalOpen(false); }} className="p-2 bg-black/5 text-[#2D2D2D] dark:text-white hover:bg-black/10 rounded-full transition-colors">
                 <X className="w-4 h-4" />
                 </button>
                 </div>
@@ -371,7 +371,7 @@ export const ShoppingTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate
                 <ChevronLeft className="w-4 h-4 opacity-50" /> Svep <ChevronRight className="w-4 h-4 opacity-50" />
                 </p>
 
-                <h3 className="text-3xl font-bold mb-2 text-[#2D2D2D] pb-1">
+                <h3 className="text-3xl font-bold mb-2 text-[#2D2D2D] dark:text-white pb-1">
                 {currentIng.name}
                 </h3>
 

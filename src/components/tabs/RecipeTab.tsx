@@ -169,19 +169,19 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
 
         return (
             <div className="pb-20">
-            {/* Ny ren Hero Header */}
-            <div className="relative pt-12 pb-2 px-6">
-                <div className="absolute top-4 right-4 flex items-center gap-2">
-                    <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
-                        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                    </button>
-                    <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
-                        <Settings className="w-5 h-5" />
-                    </button>
-                </div>
-                <h1 className="text-3xl font-semibold text-[#2D2D2D] mb-1 tracking-tight">Generera Recept</h1>
-                <p className="text-[#7A7A7A] text-sm font-medium">Smarta matförslag utifrån ditt lagersaldo</p>
+        {/* Clean Premium Header */}
+        <div className="relative pt-12 pb-6 px-6 bg-transparent">
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+                <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
+                    {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+                <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-black/5 transition-all">
+                    <Settings className="w-5 h-5" />
+                </button>
             </div>
+            <h1 className="text-3xl font-bold text-black dark:text-white mb-1 tracking-tight">Recept</h1>
+            <p className="text-[#8E8E93] text-sm font-medium">Dina smarta matförslag</p>
+        </div>
 
             <div className="p-4 space-y-4">
             <div className={clsx("p-4 rounded-2xl shadow-sm border space-y-4", t.cardBg, t.border)}>
@@ -244,8 +244,8 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
                                 <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                             </div>
                         ) : (
-                            <div className="h-48 bg-[#E3EAE0] flex items-center justify-center">
-                                <span className="text-[#A9B8A2] opacity-50"><ChefHat size={48} /></span>
+                            <div className="h-48 bg-[#E9E9EB] dark:bg-[#2C2C2E] px-4 py-6 text-black dark:text-white flex items-center justify-center">
+                                <span className="text-[#8E8E93] opacity-50"><ChefHat size={48} /></span>
                             </div>
                         )}
 
@@ -382,10 +382,10 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
                 return (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-4">
                     <div className={clsx("w-full sm:max-w-lg max-h-[85vh] rounded-t-3xl sm:rounded-2xl overflow-hidden flex flex-col", t.cardBg)}>
-                    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white flex-shrink-0">
+                    <div className="bg-[#F2F2F7] dark:bg-slate-800 p-6 text-black dark:text-white flex-shrink-0 border-b border-[#3C3C43]/10">
                     <div className="flex items-start justify-between mb-2">
                     <div className="flex-1 pr-4"></div>
-                    <button onClick={() => { setViewingRecipe(null); setIsModalOpen(false); }} className="p-1 hover:bg-white/20 rounded-full transition-colors"><X className="w-5 h-5" /></button>
+                    <button onClick={() => { setViewingRecipe(null); setIsModalOpen(false); }} className="p-1 hover:bg-black/5 rounded-full transition-colors"><X className="w-5 h-5" /></button>
                     </div>
                     <h2 className="text-2xl font-bold">{viewingRecipe.title}</h2>
                     </div>
