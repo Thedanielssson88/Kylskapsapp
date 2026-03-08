@@ -47,13 +47,30 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
 
             try {
                 const aiResponse = await callAI(recipeStrictness === 'strict' ? strictPrompt : flexPrompt);
-                const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+
+                // Försök hitta JSON-array i svaret - ta första kompletta array
+                let jsonMatch = aiResponse.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+
+                // Om det inte fungerade, prova med mer generös regex
+                if (!jsonMatch) {
+                    jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+                }
+
                 if (jsonMatch) {
-                    const parsedRecipes = JSON.parse(jsonMatch[0]);
-                    setGeneratedRecipes(parsedRecipes);
-                    setRecipeView('generated');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    await putData(STORES.GENERATED_RECIPES, { timestamp: Date.now(), recipes: parsedRecipes });
+                    try {
+                        const parsedRecipes = JSON.parse(jsonMatch[0]);
+                        if (Array.isArray(parsedRecipes) && parsedRecipes.length > 0) {
+                            setGeneratedRecipes(parsedRecipes);
+                            setRecipeView('generated');
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                            await putData(STORES.GENERATED_RECIPES, { timestamp: Date.now(), recipes: parsedRecipes });
+                        } else {
+                            alert('AI:n returnerade inga recept. Försök igen.');
+                        }
+                    } catch (parseError) {
+                        console.error('JSON parse error:', parseError, 'Matched text:', jsonMatch[0].substring(0, 200));
+                        alert(`AI svarade men JSON-formatet var felaktigt. Försök igen.`);
+                    }
                 } else {
                     alert(`AI svarade men utan JSON-format. Svar: ${aiResponse.substring(0, 200)}`);
                 }
@@ -115,15 +132,29 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
                 }]`;
 
                 const aiResponse = await callAI(prompt);
-                const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+
+                // Försök hitta JSON-array i svaret - ta första kompletta array
+                let jsonMatch = aiResponse.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+
+                // Om det inte fungerade, prova med mer generös regex
+                if (!jsonMatch) {
+                    jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+                }
 
                 if (jsonMatch) {
-                    const parsed = JSON.parse(jsonMatch[0]);
-                    if (parsed.length > 0) {
-                        const recipe = parsed[0];
-                        await toggleSavedRecipe(recipe);
-                        alert(`✅ Receptet "${recipe.title}" har sparats till dina favoriter!`);
-                        setRecipeUrl('');
+                    try {
+                        const parsed = JSON.parse(jsonMatch[0]);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            const recipe = parsed[0];
+                            await toggleSavedRecipe(recipe);
+                            alert(`✅ Receptet "${recipe.title}" har sparats till dina favoriter!`);
+                            setRecipeUrl('');
+                        } else {
+                            alert('Kunde inte hitta något recept i svaret.');
+                        }
+                    } catch (parseError) {
+                        console.error('JSON parse error:', parseError, 'Matched text:', jsonMatch[0].substring(0, 200));
+                        alert(`Kunde inte tolka receptet. AI:n svarade i fel format.`);
                     }
                 } else {
                     alert('Kunde inte extrahera receptet från sidan.');
