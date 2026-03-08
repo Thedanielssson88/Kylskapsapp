@@ -1,0 +1,9 @@
+whisper.cpp/
+android/
+AIChat/
+*.jpg
+*.png
+*.jpeg
+*.gif
+node_modules/
+.git/
