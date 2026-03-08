@@ -24,15 +24,18 @@ const SmartPantryShell = () => {
     useEffect(() => { localStorage.setItem('NANO_DARK_MODE', String(darkMode)); }, [darkMode]);
 
     const t = useMemo(() => darkMode ? {
-        bg: 'bg-slate-950', bgAlt: 'bg-slate-900', bgInput: 'bg-slate-900',
-        border: 'border-slate-800', text: 'text-slate-100', textMuted: 'text-slate-400', textWhite: 'text-white',
-        cardBg: 'bg-slate-900/50 backdrop-blur-sm', btnPrimary: 'bg-violet-600 hover:bg-violet-500 text-white shadow-[0_4px_20px_rgb(124,58,237,0.3)]',
-                      btnGhost: 'hover:bg-slate-800 text-slate-300', navBg: 'bg-slate-950/85', activeTabBg: 'bg-violet-500/10 text-violet-400'
+        bg: 'bg-slate-900', bgAlt: 'bg-slate-800', bgInput: 'bg-slate-800',
+        border: 'border-slate-700', text: 'text-[#F7F4EB]', textMuted: 'text-[#A9B8A2]', textWhite: 'text-white',
+        cardBg: 'bg-slate-800 shadow-md', btnPrimary: 'bg-[#C48B71] hover:bg-[#b57d63] text-white',
+        btnGhost: 'hover:bg-slate-700 text-slate-300', navBg: 'bg-slate-900/95', activeTabBg: 'bg-[#A9B8A2]/20 text-[#A9B8A2]'
     } : {
-        bg: 'bg-slate-50', bgAlt: 'bg-white', bgInput: 'bg-slate-50',
-        border: 'border-slate-200/60', text: 'text-slate-800', textMuted: 'text-slate-500', textWhite: 'text-slate-900',
-        cardBg: 'bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)]', btnPrimary: 'bg-violet-600 hover:bg-violet-700 text-white shadow-[0_4px_20px_rgb(124,58,237,0.25)]',
-                      btnGhost: 'hover:bg-slate-100 text-slate-600', navBg: 'bg-white/85', activeTabBg: 'bg-violet-50 text-violet-700'
+        // Nya ljusa temat från referensbilden
+        bg: 'bg-[#F7F4EB]', bgAlt: 'bg-[#F7F4EB]', bgInput: 'bg-white',
+        border: 'border-[#E0E0E0]/50', text: 'text-[#2D2D2D]', textMuted: 'text-[#7A7A7A]', textWhite: 'text-white',
+        cardBg: 'bg-white shadow-[0_4px_15px_rgba(0,0,0,0.04)]', 
+        btnPrimary: 'bg-[#C48B71] hover:bg-[#b57d63] text-white shadow-sm', // Terrakotta
+        btnGhost: 'hover:bg-[#E8E5DC] text-[#2D2D2D]', navBg: 'bg-[#F7F4EB]/95', 
+        activeTabBg: 'bg-[#E3EAE0] text-[#2D2D2D]' // Ljus Salviagrön bakgrund för aktiv flik
     }, [darkMode]);
 
     return (

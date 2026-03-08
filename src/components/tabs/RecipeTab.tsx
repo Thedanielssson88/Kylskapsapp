@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Heart, Clock, X, MessageCircle, Calendar, RefreshCw, ShoppingCart, Sun, Moon, Settings } from 'lucide-react';
+import { Plus, Heart, Clock, X, MessageCircle, Calendar, RefreshCw, ShoppingCart, Sun, Moon, Settings, ChefHat } from 'lucide-react';
 import { clsx } from 'clsx';
 import { usePantry } from '../../context/PantryContext';
 import { Recipe, MealType } from '../../types/pantry';
@@ -169,36 +169,18 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
 
         return (
             <div className="pb-20">
-            {/* Hero Header - Recipe Theme */}
-            <div className="relative h-40 bg-gradient-to-br from-red-400 via-orange-500 to-amber-500 overflow-hidden mb-4">
-            <div className="absolute inset-0">
-            <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-            {/* Cooking pot */}
-            <ellipse cx="200" cy="140" rx="60" ry="35" fill="white" opacity="0.8"/>
-            <rect x="140" y="105" width="120" height="40" rx="5" fill="white" opacity="0.8"/>
-            <rect x="130" y="100" width="10" height="50" rx="3" fill="white" opacity="0.6"/>
-            <rect x="260" y="100" width="10" height="50" rx="3" fill="white" opacity="0.6"/>
-            {/* Steam */}
-            <path d="M 180 90 Q 175 70 180 60" stroke="white" strokeWidth="3" fill="none" opacity="0.5"/>
-            <path d="M 200 85 Q 195 65 200 55" stroke="white" strokeWidth="3" fill="none" opacity="0.5"/>
-            <path d="M 220 90 Q 225 70 220 60" stroke="white" strokeWidth="3" fill="none" opacity="0.5"/>
-            {/* Utensils */}
-            <rect x="280" y="90" width="4" height="70" fill="white" opacity="0.6"/>
-            <circle cx="282" cy="85" r="6" fill="white" opacity="0.6"/>
-            </svg>
-            </div>
-            <div className="absolute top-4 right-4 flex items-center gap-2">
-            <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-            {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
-            </button>
-            <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-            <Settings className="w-5 h-5 text-white" />
-            </button>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-            <h1 className="text-2xl font-black text-white drop-shadow-lg">Recept 🍳</h1>
-            <p className="text-white/90 text-sm mt-0.5">AI-genererade matförslag</p>
-            </div>
+            {/* Ny ren Hero Header */}
+            <div className="relative pt-12 pb-2 px-6">
+                <div className="absolute top-4 right-4 flex items-center gap-2">
+                    <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                    </button>
+                    <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+                        <Settings className="w-5 h-5" />
+                    </button>
+                </div>
+                <h1 className="text-3xl font-semibold text-[#2D2D2D] mb-1 tracking-tight">Generera Recept</h1>
+                <p className="text-[#7A7A7A] text-sm font-medium">Smarta matförslag utifrån ditt lagersaldo</p>
             </div>
 
             <div className="p-4 space-y-4">
@@ -225,7 +207,7 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
                 <h2 className="font-bold text-xs uppercase opacity-70">Diet & Allergi</h2>
                 <div className="flex flex-wrap gap-2">
                 {dietOptions.map(diet => (
-                    <button key={diet} onClick={() => setActiveDiets(prev => prev.includes(diet) ? prev.filter(d=>d!==diet) : [...prev, diet])} className={clsx("px-3 py-1.5 text-xs font-bold rounded-full border transition-colors", activeDiets.includes(diet) ? "bg-purple-500 text-white border-purple-500" : t.bgInput + " " + t.border)}>{diet}</button>
+                    <button key={diet} onClick={() => setActiveDiets(prev => prev.includes(diet) ? prev.filter(d=>d!==diet) : [...prev, diet])} className={clsx("px-4 py-1.5 text-[13px] font-medium rounded-full transition-colors", activeDiets.includes(diet) ? "bg-[#A9B8A2] text-white" : "bg-white text-[#7A7A7A] border border-[#E0E0E0]")}>{diet}</button>
                 ))}
                 </div>
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
@@ -251,35 +233,46 @@ export const RecipeTab = ({ t, setActiveTab, setChatInput, setAttachedRecipe, se
             {(recipeView === 'generated' ? generatedRecipes : savedRecipes).map((recipe, idx) => {
                 const isSaved = savedRecipes.some(r => r.title === recipe.title);
                 return (
-                    <div key={idx} onClick={() => { setViewingRecipe(recipe); setIsModalOpen(true); }} className={clsx("rounded-2xl overflow-hidden shadow-sm border relative cursor-pointer hover:shadow-md transition-shadow", t.cardBg, t.border)}>
-                    <button onClick={(e) => { e.stopPropagation(); toggleSavedRecipe(recipe); }} className="absolute top-3 right-3 p-2 bg-black/20 hover:bg-black/40 rounded-full transition-colors z-10">
-                    <Heart className="w-5 h-5" fill={isSaved ? "currentColor" : "none"} color={isSaved ? "#ef4444" : "white"} />
-                    </button>
-                    {recipe.imageUrl ? (
-                        <div className="relative h-40 overflow-hidden">
-                        <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-4 pr-14 text-white">
-                        <h3 className="font-bold text-lg leading-tight">{recipe.title}</h3>
+                    <div key={idx} onClick={() => { setViewingRecipe(recipe); setIsModalOpen(true); }} className={clsx("rounded-3xl overflow-hidden relative cursor-pointer transition-shadow", t.cardBg, t.border)}>
+                        <button onClick={(e) => { e.stopPropagation(); toggleSavedRecipe(recipe); }} className="absolute top-3 right-3 p-2.5 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full transition-colors z-10">
+                            <Heart className="w-5 h-5" fill={isSaved ? "#C48B71" : "none"} color={isSaved ? "#C48B71" : "white"} strokeWidth={2} />
+                        </button>
+                        
+                        {/* Bilden */}
+                        {recipe.imageUrl ? (
+                            <div className="relative h-48 overflow-hidden">
+                                <img src={recipe.imageUrl} alt={recipe.title} className="w-full h-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                            </div>
+                        ) : (
+                            <div className="h-48 bg-[#E3EAE0] flex items-center justify-center">
+                                <span className="text-[#A9B8A2] opacity-50"><ChefHat size={48} /></span>
+                            </div>
+                        )}
+
+                        {/* Texten på kortet */}
+                        <div className="p-5">
+                            {/* Nya fina taggar över rubriken */}
+                            <div className="flex gap-2 mb-2">
+                                 {recipe.prepTime && <span className="bg-[#A9B8A2] text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Snabblagat</span>}
+                                 {recipe.calories && recipe.calories > 500 && <span className="bg-[#A9B8A2] text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Mättande</span>}
+                            </div>
+                            
+                            <h3 className="font-semibold text-lg text-[#2D2D2D] mb-1">{recipe.title}</h3>
+                            <p className="text-sm text-[#7A7A7A] line-clamp-2 mb-3">
+                                {recipe.description || recipe.instructions.split('\n')[0].substring(0, 100) + '...'}
+                            </p>
+                            
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-1.5 text-xs text-[#C48B71] font-semibold">
+                                    ★ 4.8 <span className="text-[#7A7A7A] font-normal">(75)</span>
+                                </div>
+                                {(recipe.prepTime || recipe.cookTime) && (
+                                    <div className="flex items-center gap-1.5 text-xs text-[#7A7A7A]">
+                                        <Clock className="w-4 h-4" /> {recipe.prepTime || recipe.cookTime}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                        </div>
-                    ) : (
-                        <div className="bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-4 pr-14 text-white">
-                        <h3 className="font-bold text-lg leading-tight">{recipe.title}</h3>
-                        </div>
-                    )}
-                    <div className="p-4">
-                    <p className="text-sm opacity-70 line-clamp-2 mb-3">
-                    {recipe.description || recipe.instructions.split('\n')[0].substring(0, 100) + '...'}
-                    </p>
-                    <div className="grid grid-cols-2 gap-2 mb-3">
-                    {(recipe.prepTime || recipe.cookTime) && (
-                        <div className="flex items-center gap-1.5 text-xs"><Clock className="w-4 h-4 text-purple-500" /><span className="font-medium">{recipe.prepTime || recipe.cookTime}</span></div>
-                    )}
-                    {recipe.calories && (
-                        <div className="flex items-center gap-1.5 text-xs"><span className="font-bold text-orange-500">🔥</span><span className="font-medium">{recipe.calories} kcal</span></div>
-                    )}
-                    </div>
-                    </div>
                     </div>
                 );
             })}

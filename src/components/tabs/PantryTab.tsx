@@ -215,39 +215,24 @@ export const PantryTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }
             <img src={previewImage} className="fixed inset-0 w-full h-full object-cover opacity-20 z-40 pointer-events-none" alt="Scanning" />
         )}
 
-        {/* Hero Header - Storage Theme */}
-        <div className="relative h-40 bg-gradient-to-br from-green-400 via-emerald-500 to-cyan-500 overflow-hidden mb-4">
-        <div className="absolute inset-0">
-        <svg viewBox="0 0 400 200" className="w-full h-full opacity-30" xmlns="http://www.w3.org/2000/svg">
-        {/* Fridge icon */}
-        <rect x="160" y="60" width="80" height="100" rx="8" fill="white" opacity="0.8"/>
-        <rect x="160" y="60" width="80" height="45" fill="white" opacity="0.5"/>
-        <circle cx="230" cy="82" r="3" fill="#333" opacity="0.6"/>
-        <circle cx="230" cy="135" r="3" fill="#333" opacity="0.6"/>
-        {/* Items inside */}
-        <rect x="175" y="75" width="15" height="20" rx="2" fill="#4ade80" opacity="0.7"/>
-        <rect x="195" y="75" width="15" height="20" rx="2" fill="#ef4444" opacity="0.7"/>
-        <rect x="215" y="75" width="15" height="20" rx="2" fill="#fbbf24" opacity="0.7"/>
-        </svg>
-        </div>
+        {/* Ny ren Hero Header */}
+        <div className="relative pt-12 pb-6 px-6">
         <div className="absolute top-4 right-4 flex items-center gap-2">
-        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-        {darkMode ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
+        <button onClick={() => setDarkMode(!darkMode)} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+        {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </button>
-        <button onClick={() => navigate('/settings')} className="p-2 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md transition-all active:scale-95">
-        <Settings className="w-5 h-5 text-white" />
+        <button onClick={() => navigate('/settings')} className="p-2 rounded-full text-[#7A7A7A] hover:bg-[#E8E5DC] transition-all">
+        <Settings className="w-5 h-5" />
         </button>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-6">
-        <h1 className="text-2xl font-black text-white drop-shadow-lg">Lagring 🧊</h1>
-        <p className="text-white/90 text-sm mt-0.5">Kylskåp, frys och skafferi</p>
-        </div>
+        <h1 className="text-3xl font-semibold text-[#2D2D2D] mb-1 tracking-tight">Lagring & Inventering</h1>
+        <p className="text-[#7A7A7A] text-sm font-medium">Kylskåp, frys och skafferi</p>
         </div>
 
         <div className="px-4 space-y-4">
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
         {locations.map(loc => (
-            <button key={loc} onClick={() => setActiveLocation(loc)} className={clsx("px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap", activeLocation === loc ? t.btnPrimary + " shadow-md" : t.bgInput + " border " + t.border + " opacity-70")}>{loc}</button>
+            <button key={loc} onClick={() => setActiveLocation(loc)} className={clsx("px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all", activeLocation === loc ? "bg-[#E3EAE0] text-[#2D2D2D]" : "bg-transparent text-[#7A7A7A] border border-[#E0E0E0]")}>{loc}</button>
         ))}
         <button onClick={() => { const name = prompt("Ny plats:"); if(name) { setLocations([...locations, name]); setActiveLocation(name); } }} className={clsx("p-2 rounded-xl border border-dashed opacity-50", t.border)}><Plus className="w-5 h-5" /></button>
         </div>
@@ -386,7 +371,7 @@ export const PantryTab = ({ t, setIsModalOpen, darkMode, setDarkMode, navigate }
                     </button>
                     <button
                         onClick={() => { setEditingIngredient(null); setIsModalOpen(false); }}
-                        className="flex-1 py-3 rounded-xl font-bold bg-gray-500 hover:bg-gray-600 text-white"
+                        className="flex-1 py-3 rounded-xl font-semibold bg-[#A9B8A2] hover:bg-[#98A791] text-white"
                     >
                         Avbryt
                     </button>
